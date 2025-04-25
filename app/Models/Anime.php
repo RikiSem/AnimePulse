@@ -118,9 +118,9 @@ class Anime extends Model
         return $this->hasOne(UserViews::class, 'anime_id', 'id');
     }
 
-    public function userRate(): HasOne
+    public function userRate(): HasMany
     {
-        return $this->hasOne(UserAnimeRate::class, 'anime_id', 'id');
+        return $this->hasMany(UserAnimeRate::class, 'anime_id', 'id');
     }
 
     public function favorite(): MorphOne

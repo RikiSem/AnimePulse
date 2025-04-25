@@ -17,6 +17,9 @@ Route::middleware(CheckRequestLocal::class)->group(function () {
             Route::post('/add', 'addToList')->name('anime.add-to-list');
             Route::post('/remove', 'removeFromList')->name('anime.remove-from-list');
         });
+        Route::prefix('rate')->group(function () {
+           Route::post('/add', 'addToRate')->name('anime.add-to-rate');
+        });
     });
 
     Route::prefix('comments')->controller(CommentController::class)->group(function () {

@@ -78,6 +78,28 @@
                             <td class="table-content">
                                 {{animeData.rate}}
                             </td>
+                            <td v-if="this.isLogin === true" class="table-content">
+                                <dropdown>
+                                    <template #trigger>
+                                        <btn tooltip="Поставить оценку">Оценить</btn>
+                                    </template>
+                                    <template #content>
+                                        <div class="select-rank">
+                                            <template v-for="rate in 10">
+                                                <btn class="btn" @click="this.setRank(rate)">{{ rate }}</btn>
+                                            </template>
+                                        </div>
+                                    </template>
+                                </dropdown>
+                            </td>
+                        </tr>
+                        <tr v-if="this.isLogin === true">
+                            <th>
+                                Ваша оценка
+                            </th>
+                            <td class="table-content">
+                                {{animeData.current_user.user_rate}}
+                            </td>
                         </tr>
                         <tr>
                             <th>
@@ -160,7 +182,7 @@
 </template>
 
 <script>
-import { Head } from '@inertiajs/vue3';
+import {Head, router} from '@inertiajs/vue3';
 import Modal from "@/Components/Modal.vue";
 import WriteReview from "@/Components/WriteReview.vue";
 import EntityPageLayout from "@/Layouts/EntityPageLayout.vue";
@@ -203,6 +225,13 @@ export default {
         this.getReviews(this.reviewOffset);
     },
     methods:{
+        async setRank(rate) {
+            await (axios.post(route('anime.add-to-rate'), {
+                anime_id: this.$props.id,
+                user_id: this.$attrs.auth.user.id,
+                rate: rate
+            }))
+        },
         async setFavorite(){
             await (axios.post(route('favorite.add'), {
                 entity_type: 'anime',
@@ -286,6 +315,17 @@ export default {
 </script>
 
 <style scoped>
+.select-rank{
+    background: linear-gradient(to bottom, red, orange, green);
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+}
+.select-rank .btn{
+    color: white;
+    border-radius: 0;
+    width: 5rem;
+}
 .anime-control{
     /*display: flex;
     flex-direction: row;

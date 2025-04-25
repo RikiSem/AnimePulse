@@ -119,7 +119,7 @@ class ResponseBodyBuilder
             'alter_names' => json_decode($anime->alter_names),
             'description' => $anime->description,
             'tags' => !empty($anime->tags) ? explode(' ', $anime->tags) : null,
-            'rate' => $anime->rate,
+            'rate' => round($anime->userRate->select('user_rate')->sum('user_rate') / ($anime->userRate->count() === 0 ? 1 : $anime->userRate->count()), 2),
             'count_series' => $anime->count_series,
             'status' => Anime::ANIME_STATUSES[$anime->status]['title'],
             'studio' => !empty(json_decode($anime->studio)) ? json_decode($anime->studio) : null,
@@ -140,7 +140,7 @@ class ResponseBodyBuilder
         if ($userId > 0) {
             $result['current_user'] = [
                 'user' => $userId,
-                'user_rate' => $anime->userRate->user_rate ?? null,
+                'user_rate' => $anime->userRate->where('user_id', '=', $userId)->first()->user_rate ?? 0,
                 'user_view' => $anime->userList->where('user_id', '=', $userId)->first()->view_status ?? null,
             ];
             $result['current_user']['user_favorite'] = null;
