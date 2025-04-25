@@ -1,0 +1,125 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@font-face {
+    font-family: 'Blacker Sans Pro';
+    src: local('Blacker Sans Pro Variable'), local('Blacker-Sans-Pro-Variable'),
+    url('../fonts/BlackerSansProVariable/BlackerSansProVariable.woff2') format('woff2'),
+    url('../fonts/BlackerSansProVariable/BlackerSansProVariable.woff') format('woff'),
+    url('../fonts/BlackerSansProVariable/BlackerSansProVariable.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+:root{
+    --color-first: #383838;
+    --color-sec: #b0669a;
+    --color-third: #666666;
+
+    --menu-btn-colot-normal: var(--color-sec);
+    --menu-btn-colot-hover: var(--color-first);
+
+    --default-border-radius: 0.9rem;
+
+    --default-front: "Blacker Sans Pro";
+    --default-font-color: white;
+
+    --anime-name-font-size: 1.2vw;
+
+    --default-green: #00b600
+}
+h1{
+    font-size: xx-large;
+}
+a:hover{
+    color: white;
+}
+.bg-color-green{
+    background-color: var(--default-green);
+}
+.test{
+    border: 1px solid red;
+}
+body{
+    background-color: var(--color-first);
+}
+.default-font{
+    font-family: var(--default-front);
+}
+.container{
+    font-family: var(--default-front);
+    color: var(--default-font-color);
+    width: 70%;
+}
+.font-color-white{
+    color: var(--default-font-color);
+}
+.default-border-color-sec{
+    border: 2px solid var(--color-sec);
+}
+.default-box-shadow{
+    box-shadow: 0px 0px 10px 1px #1d1d1d;
+}
+.default-border-top-color-sec{
+    border-top: 2px solid var(--color-sec);
+}
+.default-border-bottom-color-sec{
+    border-bottom: 2px solid var(--color-sec);
+}
+.bg-color-first{
+    background-color: var(--color-first);
+}
+.bg-color-sec-hover{
+    background-color: var(--color-sec);
+    color: white;
+}
+.bg-color-sec{
+    background-color: var(--color-sec);
+}
+.btn-border-color-sec{
+    border: 2px solid var(--color-sec);
+}
+.default-cursor{
+    cursor: default;
+}
+.pointer-cursor{
+    cursor: pointer;
+}
+.btn-custom{
+    padding: 3px;
+}
+.default-border{
+    border: 1px solid var(--color-sec);
+    border-radius: 0.75rem;
+}
+.p-fixed{
+    position: fixed;
+}
+.border-radius-top-left {
+    border-radius: var(--default-border-radius) 0 0 0;
+}
+.border-radius-top-right {
+    border-radius: 0 var(--default-border-radius) 0 0;
+}
+.border-radius-bottom-right {
+    border-radius: 0 0 var(--default-border-radius) 0;
+}
+.border-radius-bottom-left {
+    border-radius: 0 0 0 var(--default-border-radius);
+}
+.underline-color-sec{
+    text-decoration: underline var(--color-sec);
+}
+.underline-color-first{
+    text-decoration: var(--color-first) underline;
+}
+.underline-color-white{
+    text-decoration: white underline;
+}
+.cloud{
+    margin: 0 0 10px 0;
+    width: fit-content;
+    padding: 5px;
+    background-color: var(--color-third);
+    border-radius: 1rem;
+}

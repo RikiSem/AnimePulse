@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'Blacker Sans Pro';
+    src: local('Blacker Sans Pro Variable'), local('Blacker-Sans-Pro-Variable'),
+        url('BlackerSansProVariable.woff2') format('woff2'),
+        url('BlackerSansProVariable.woff') format('woff'),
+        url('BlackerSansProVariable.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
