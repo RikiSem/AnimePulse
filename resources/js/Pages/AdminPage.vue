@@ -8,6 +8,9 @@
                         <nav-link class="default-border" :href="route('admin')">
                             <menu-btn style="margin: auto">Рецензии</menu-btn>
                         </nav-link>
+                        <nav-link class="default-border" :href="route('admin')">
+                            <menu-btn style="margin: auto">Багрепорты</menu-btn>
+                        </nav-link>
                     </div>
                 </div>
                 <div class="right-side mx-5">

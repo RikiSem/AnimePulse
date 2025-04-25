@@ -14,18 +14,21 @@ class FavoriteController extends Controller
 {
     public function add(Request $request) {
         $currentFavorite = UserAnimeListRep::getOne($request->user_id, $request->entity_id);
-        if (!empty($currentFavorite) && $currentFavorite->favorite) {
-            $this->remove($request);
-            NotificationController::sendNotification(
-                $request->user_id,
-                Texts::EVENT_TEXTS['remove_from_favorite']
-            );
-        } else {
-            UserAnimeListRep::setFavorite($request->user_id, $request->entity_id);
-            NotificationController::sendNotification(
-                $request->user_id,
-                Texts::EVENT_TEXTS['add_to_favorite']
-            );
+        if (!empty($currentFavorite)) {
+            if ($currentFavorite->favorite) {
+                $currentFavorite->favorite = false;
+                NotificationController::sendNotification(
+                    $request->user_id,
+                    Texts::EVENT_TEXTS['remove_from_favorite']
+                );
+            } else {
+                $currentFavorite->favorite = true;
+                NotificationController::sendNotification(
+                    $request->user_id,
+                    Texts::EVENT_TEXTS['add_to_favorite']
+                );
+            }
+            $currentFavorite->update();
         }
         return response('done');
     }

@@ -50,14 +50,14 @@
                                 </svg>
                             </btn>
                         </template>
-                        <btn @click="showReviewCreateModal = !showReviewCreateModal" tooltip="Написать рецензию" class="btn anime-control-btn">
+                        <btn @click="showReviewCreateModal = !showReviewCreateModal" tooltip="Написать рецензию" class="last-btn anime-control-btn">
                             <svg class="svg-g" height="24" preserveAspectRatio="xMidYMid meet" version="1.0" viewBox="0 0 256.000000 256.000000" width="24" xmlns="http://www.w3.org/2000/svg">
                                 <g stroke="none" transform="translate(0.000000,256.000000) scale(0.100000,-0.100000)">
                                     <path d="M2016 2465 c-22 -8 -53 -24 -70 -36 -35 -25 -175 -171 -345 -359 -320 -352 -690 -719 -1088 -1078 l-190 -170 -41 -105 c-66 -169 -203 -587 -200 -610 2 -13 11 -23 24 -25 21 -3 316 96 559 188 162 62 138 42 400 335 319 356 648 680 1090 1071 283 252 325 307 325 428 -1 68 -31 115 -156 237 -91 89 -128 119 -159 128 -53 14 -101 13 -149 -4z m117 -159 c46 -19 173 -154 181 -193 4 -17 2 -50 -4 -72 -12 -47 -56 -90 -420 -422 -390 -355 -503 -467 -1021 -1009 l-187 -195 -78 -29 c-44 -16 -84 -31 -91 -33 -6 -3 -14 6 -18 18 -11 32 -81 105 -116 119 -36 15 -35 23 12 135 28 67 38 79 251 280 351 332 706 689 954 960 331 362 392 423 439 440 51 18 59 18 98 1z"/>
                                 </g>
                             </svg>
                         </btn>
-                        <btn tooltip="Нашли баг?" class="last-btn anime-control-btn">
+                        <!--<btn tooltip="Нашли баг?" class="last-btn anime-control-btn">
                             <svg class="svg-g" width="24" height="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
                                 <g data-name="Search Virus">
                                     <path d="M21 30a6.008 6.008 0 0 0 5.509-3.627L29 27.618V31a1 1 0 0 0 2 0v-4a1 1 0 0 0-.553-.894l-3.466-1.734c.008-.123.019-.246.019-.372v-1.231l2.554.199 2.739 2.739a1 1 0 0 0 1.414-1.414l-3-3a.998.998 0 0 0-.629-.29L27 20.763v-1.145l3.447-1.723A1 1 0 0 0 31 17v-5a1 1 0 0 0-2 0v4.382l-2 1V17a1 1 0 0 0-1-1h-1a3.963 3.963 0 0 0-.797-2.372l.659-1.121A.998.998 0 0 0 25 12v-1a1 1 0 0 0-2 0v.728l-.37.628a3.917 3.917 0 0 0-3.26 0l-.37-.629V11a1 1 0 0 0-2 0v1a.998.998 0 0 0 .138.507l.66 1.12A3.963 3.963 0 0 0 17 16h-1a1 1 0 0 0-1 1v.382l-2-1V12a1 1 0 0 0-2 0v5a1 1 0 0 0 .553.894L15 19.619v1.145l-3.078.24a.998.998 0 0 0-.629.29l-3 3a1 1 0 0 0 1.414 1.414l2.739-2.74L15 22.77V24c0 .126.011.249.019.372l-3.466 1.733A1 1 0 0 0 11 27v4a1 1 0 0 0 2 0v-3.382l2.491-1.245A6.008 6.008 0 0 0 21 30zm4-6a3.996 3.996 0 0 1-3 3.858V18h3zm-4-10a2.002 2.002 0 0 1 2 2h-4a2.002 2.002 0 0 1 2-2zm-4 4h3v9.858A3.996 3.996 0 0 1 17 24z"/>
@@ -66,7 +66,7 @@
                                     <path d="M58.1 58.1a3.144 3.144 0 0 1-4.343.001l-3.7-3.7a1 1 0 0 0-1.413 1.415l3.699 3.7a5.071 5.071 0 0 0 7.172-.002A1 1 0 0 0 58.1 58.1z"/>
                                 </g>
                             </svg>
-                        </btn>
+                        </btn>-->
                     </div>
                 </div>
                 <div class="anime-info">
@@ -292,7 +292,7 @@ export default {
     flex-wrap: wrap;
     justify-content: space-between;*/
     display: grid;
-    grid-template-columns: 25% 25% 25% 25%;
+    grid-template-columns: 33% 34% 33%;
 }
 .anime-card{
     justify-content: space-evenly;

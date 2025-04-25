@@ -48,6 +48,9 @@ Route::middleware('auth')->controller(DashboardController::class)->group(functio
 
     Route::prefix('admin')->group(function () {
         Route::get('/show', [AdminController::class, 'show'])->name('admin');
+        Route::prefix('bug')->group(function () {
+            Route::get('/', [AdminController::class, 'showBugsReports'])->name('admin.bug');
+        });
     });
 
     Route::prefix('user')->group(function () {

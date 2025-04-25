@@ -48,16 +48,25 @@ class UserAnimeListRep
         return $result->get();
     }
 
+    public static function createNewList(int $userId, int $animeId, string $status) {
+        $animeList = new UserAnimeList();
+        $animeList->user_id = $userId;
+        $animeList->anime_id = $animeId;
+        $animeList->view_status = $status;
+        $animeList->save();
+        return $animeList;
+    }
+
     public static function setAnimeInList(int $userId, int $animeId, string $status) {
         $animeList = UserAnimeList::where('user_id', '=', $userId)
         ->where('anime_id', '=', $animeId)
             ->first();
         if (empty($animeList)) {
-            $animeList = new UserAnimeList();
-            $animeList->user_id = $userId;
-            $animeList->anime_id = $animeId;
-            $animeList->view_status = $status;
-            $animeList->save();
+            self::createNewList(
+                $userId,
+                $animeId,
+                $status
+            );
         } else {
             $animeList->view_status = $status;
             $animeList->update();

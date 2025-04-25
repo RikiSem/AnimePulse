@@ -14,6 +14,7 @@ use App\Http\Classes\Storage;
 use App\Http\Classes\Texts;
 use App\Models\Anime;
 use App\Models\Tag;
+use App\Models\UserAnimeList;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -22,22 +23,23 @@ use function Symfony\Component\Translation\t;
 class AnimeController extends Controller
 {
     public function addToList(Request $request) {
-        if ($request->old_status === null) {
-            UserAnimeListRep::setAnimeInList($request->user_id, $request->anime_id, $request->new_status);
-            //UserViewRep::addUserViewStatus($request->anime_id, $request->user_id, $request->new_status);
-            NotificationController::sendNotification(
+        $userAnimeList = UserAnimeListRep::getOne($request->user_id, $request->anime_id);
+        if (empty($userAnimeList)) {
+            $userAnimeList = UserAnimeListRep::createNewList(
                 $request->user_id,
-                Texts::EVENT_TEXTS['change_status']
+                $request->anime_id,
+                $request->new_status
             );
-        } else if ($request->new_status === $request->old_status) {
-            $this->removeFromList($request);
         } else {
-            $this->removeFromList($request);
-            UserViewRep::addUserViewStatus($request->anime_id, $request->user_id, $request->new_status);
-            NotificationController::sendNotification(
-                $request->user_id,
-                Texts::EVENT_TEXTS['change_status']
-            );
+            if ($userAnimeList->view_status === $request->new_status) {
+                $userAnimeList->view_status = null;
+            } else {
+                $userAnimeList->view_status = $request->new_status;
+            }
+            $userAnimeList->update();
+            if ($userAnimeList->view_status === null) {
+                $userAnimeList->delete();
+            }
         }
         return response('done');
     }
