@@ -7,9 +7,18 @@ namespace App\Http\Classes\Reps;
 use App\Models\Anime;
 use App\Models\Comment;
 use App\Models\Reviews;
+use Illuminate\Database\Eloquent\Collection;
 
-class CommentRep
+class CommentRep implements BaseRepositoryInterface
 {
+    public static function getOne(int $id): Comment
+    {
+        return Comment::find($id);
+    }
+    public static function getAll(): Collection
+    {
+        return Comment::all();
+    }
     public static function getForAnime(int $id, int $offset = 0) {
         return Comment::where('commentable_id', '=', $id)
             ->where('commentable_type', '=', Anime::ENTITY_TYPE)

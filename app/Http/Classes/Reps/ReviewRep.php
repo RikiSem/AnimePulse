@@ -7,12 +7,17 @@ namespace App\Http\Classes\Reps;
 use App\Models\ReviewReaction;
 use App\Models\Reviews;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
-class ReviewRep
+class ReviewRep implements BaseRepositoryInterface
 {
 
+    public static function getAll(): Collection
+    {
+        return Reviews::all();
+    }
     public static function getReviewCount(): int
     {
         return Reviews::all()->count();

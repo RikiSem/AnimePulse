@@ -9,7 +9,7 @@ use App\Models\Favorites;
 use App\Models\UserViews;
 use Illuminate\Database\Eloquent\Collection;
 
-class AnimeRep
+class AnimeRep implements BaseRepositoryInterface
 {
     public const ANIME_LIMIT_ON_PAGE = 30;
 
