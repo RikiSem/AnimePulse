@@ -136,13 +136,17 @@ class ResponseBodyBuilder
             'release_month' => $anime->release_month,
             'release_year' => $anime->release_year,
             'in_current_season' => $anime->in_current_season,
+            'current_user' => [
+                'user' => 0,
+                'user_rate' => 0,
+                'user_view' => null,
+            ]
         ];
         if ($userId > 0) {
-            $result['current_user'] = [
-                'user' => $userId,
-                'user_rate' => $anime->userRate->where('user_id', '=', $userId)->first()->user_rate ?? 0,
-                'user_view' => $anime->userList->where('user_id', '=', $userId)->first()->view_status ?? null,
-            ];
+            $result['current_user']['user'] = $userId;
+            $result['current_user']['user_rate'] = $anime->userRate->where('user_id', '=', $userId)->first()->user_rate ?? 0;
+            $result['current_user']['user_view'] = $anime->userList->where('user_id', '=', $userId)->first()->view_status ?? null;
+
             $result['current_user']['user_favorite'] = null;
             if (!is_null($anime->userList->where('user_id', '=', $userId)->first())) {
                 $result['current_user']['user_favorite'] = $anime->userList->where('user_id', '=', $userId)->first()->favorite;

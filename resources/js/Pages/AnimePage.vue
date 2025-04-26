@@ -1,5 +1,8 @@
 <template>
-    <Head :title="animeData.name"></Head>
+    <Head>
+        <title>{{ this.animeData.name }}</title>
+        <meta name="description" :content="String().concat('Полная информация об аниме ', this.animeData.name, ': сюжет, персонажи, отзывы зрителей и рейтинг. Узнайте всё, что нужно знать перед просмотром или поделитесь своим мнением с сообществом.')">
+    </Head>
     <entity-page-layout
         @moreComments="setOffsetAndGet(0)"
         @moreReviews="setOffsetAndGet(1)"
@@ -50,7 +53,7 @@
                                 </svg>
                             </btn>
                         </template>
-                        <btn @click="showReviewCreateModal = !showReviewCreateModal" tooltip="Написать рецензию" class="last-btn anime-control-btn">
+                        <btn v-if="!this.currentUserAlreadyWriteReview" @click="showReviewCreateModal = !showReviewCreateModal" tooltip="Написать рецензию" class="last-btn anime-control-btn">
                             <svg class="svg-g" height="24" preserveAspectRatio="xMidYMid meet" version="1.0" viewBox="0 0 256.000000 256.000000" width="24" xmlns="http://www.w3.org/2000/svg">
                                 <g stroke="none" transform="translate(0.000000,256.000000) scale(0.100000,-0.100000)">
                                     <path d="M2016 2465 c-22 -8 -53 -24 -70 -36 -35 -25 -175 -171 -345 -359 -320 -352 -690 -719 -1088 -1078 l-190 -170 -41 -105 c-66 -169 -203 -587 -200 -610 2 -13 11 -23 24 -25 21 -3 316 96 559 188 162 62 138 42 400 335 319 356 648 680 1090 1071 283 252 325 307 325 428 -1 68 -31 115 -156 237 -91 89 -128 119 -159 128 -53 14 -101 13 -149 -4z m117 -159 c46 -19 173 -154 181 -193 4 -17 2 -50 -4 -72 -12 -47 -56 -90 -420 -422 -390 -355 -503 -467 -1021 -1009 l-187 -195 -78 -29 c-44 -16 -84 -31 -91 -33 -6 -3 -14 6 -18 18 -11 32 -81 105 -116 119 -36 15 -35 23 12 135 28 67 38 79 251 280 351 332 706 689 954 960 331 362 392 423 439 440 51 18 59 18 98 1z"/>
@@ -93,7 +96,7 @@
                                 </dropdown>
                             </td>
                         </tr>
-                        <tr v-if="this.isLogin === true">
+                        <tr v-if="this.isLogin === true && animeData.current_user.user_rate > 0">
                             <th>
                                 Ваша оценка
                             </th>
@@ -207,6 +210,7 @@ export default {
             isLogin: false,
             userId: 0,
             showReviewCreateModal: false,
+            currentUserAlreadyWriteReview: false,
         }
     },
     props:{
@@ -217,12 +221,17 @@ export default {
     },
     mounted() {
         this.isLogin = this.$attrs.auth.user !== null;
+        this.getReviews(this.reviewOffset);
         if (this.isLogin) {
             this.userId = this.$attrs.auth.user.id
+            this.reviews.forEach((element) => {
+                if (element.author.id === this.userId) {
+                    this.currentUserAlreadyWriteReview = true;
+                }
+            })
         }
         this.getAnimeData();
         this.getComments(this.commentOffset);
-        this.getReviews(this.reviewOffset);
     },
     methods:{
         async setRank(rate) {

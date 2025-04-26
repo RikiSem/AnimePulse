@@ -1,5 +1,8 @@
 <template>
-    <Head title="О сайте"></Head>
+    <Head>
+        <title>О сайте</title>
+        <meta name="description" content="Узнайте больше о нашей команде и миссии. Мы — группа любителей аниме, которые стремятся делиться своим опытом и знаниями с вами. Присоединяйтесь к нашему сообществу и станьте частью мира аниме!">
+    </Head>
     <page-template :pages="pages" :user="this.$attrs.auth.user">
         <template #content>
             <div class="content">

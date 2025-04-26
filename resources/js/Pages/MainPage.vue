@@ -1,5 +1,8 @@
 <template>
-    <Head title="Главная"></Head>
+    <Head>
+        <title>Главная</title>
+        <meta name="description" content="Добро пожаловать на наш сайт, посвящённый миру аниме! Здесь вы найдёте обширную библиотеку аниме, профессиональные рецензии и интересные статьи о культуре аниме. Начните своё путешествие в мир японской анимации прямо сейчас!">
+    </Head>
     <page-template :pages="pages" :user="$attrs.auth.user">
         <template v-slot:content>
             <main-page-border>

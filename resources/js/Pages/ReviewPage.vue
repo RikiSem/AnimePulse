@@ -1,5 +1,8 @@
 <template>
-    <Head :title="String().concat('Рецензия на аниме ', review.anime.name)"></Head>
+    <Head>
+        <title>{{ String().concat('Рецензия на аниме ', review.anime.name) }}</title>
+        <meta name="description" :content="String().concat('Читайте рецензию на аниме ', review.anime.name, ' от пользоввателя ', review.author.name,'. Наши критики разбирают сюжет, анимацию, музыку и общее впечатление от тайтла. Присоединяйтесь к обсуждению и делитесь своими мыслями!')">
+    </Head>
     <entity-page-layout
         @moreComments="setOffsetAndGet(0)"
         @moreReviews="setOffsetAndGet(1)"

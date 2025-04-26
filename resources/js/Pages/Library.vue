@@ -1,5 +1,8 @@
 <template>
-    <Head title="Библиотека"></Head>
+    <Head>
+        <title>Библиотека</title>
+        <meta name="description" content="Исследуйте нашу коллекцию аниме всех жанров и эпох. В нашей библиотеке представлены как классические тайтлы, так и новинки сезона. Найдите своё следующее любимое аниме с удобным поиском и фильтрами.">
+    </Head>
     <page-template :pages="pages" :user="$attrs.auth.user">
         <template v-slot:content>
             <anime-list-filter @filterData="filterData => this.applyFilter(filterData)" :user-id="this.$props.userId" :statuses-for-user="statusForUser" :anime-statuses="animeStatuses" :filter-route="'library.all'" class="mx-5 my-5 default-border-color-sec p-6"></anime-list-filter>

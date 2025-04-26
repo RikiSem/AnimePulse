@@ -92,7 +92,7 @@ class AnimeController extends Controller
         foreach ($responseData as $key => $anime) {
             $result[] = ResponseBodyBuilder::userAnimeList($anime, $request->userId);
         }
-        return response(!empty($result) ? $result : 'null');
+        return response(!empty($result) ? $result : null);
     }
 
     public function filter(Request $request) {;
@@ -117,7 +117,7 @@ class AnimeController extends Controller
 
         }
 
-        return response(!empty($result) ? $result : 'null');
+        return response(!empty($result) ? $result : null);
     }
 
     public function tags(Request $request) {
