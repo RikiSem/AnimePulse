@@ -16,11 +16,17 @@ class IndexController extends Controller
 {
 
     public const SEASON_ANIME_PAGE_LIMIT = 7;
+    protected AnimeRep $animeRep;
+    protected ReviewRep $reviewRep;
+    public function __construct(AnimeRep $animeRep, ReviewRep $reviewRep) {
+        $this->animeRep = $animeRep;
+        $this->reviewRep = $reviewRep;
+    }
 
     public function show(Request $request)
     {
         $pages = Pages::$pages;
-        $responseData = AnimeRep::getSeasonAnime()
+        $responseData = $this->animeRep->getSeasonAnime()
             ->chunk(self::SEASON_ANIME_PAGE_LIMIT)
             ->all();
         $seasonAnimelist = [];
@@ -31,12 +37,12 @@ class IndexController extends Controller
             }
             $seasonAnimelist[] = $pageArray;
         }
-        $responseData = ReviewRep::getForLastDays(3);
+        $responseData = $this->reviewRep->getForLastDays(3);
         $newReviews = [];
         foreach ($responseData as $review) {
             $newReviews[] = ResponseBodyBuilder::review($review);
         }
-        $responseData = ReviewRep::getMostPopular();
+        $responseData = $this->reviewRep->getMostPopular();
         $popularReviews = [];
         foreach ($responseData as $review) {
             $popularReviews[] = ResponseBodyBuilder::review($review);

@@ -11,19 +11,21 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
+    protected CommentRep $commentRep;
+    public function __construct(CommentRep $commentRep) {
+        $this->commentRep = $commentRep;
+    }
     public function getForAnime(Request $request) {
-        $responseData = CommentRep::getForAnime($request->id, $request->offset);
+        $responseData = $this->commentRep->getForAnime($request->id, $request->offset);
         $result = [];
-        foreach ($responseData as $key => $comment) {
-            if ($comment->reply_to === 0) {
-                $result[] = ResponseBodyBuilder::comment($comment);
-            }
-        }
+        $result = $responseData->map(function ($comment) {
+            return ResponseBodyBuilder::comment($comment);
+        });
         return response($result);
     }
 
     public function create(Request $request) {
-        CommentRep::create(
+        $this->commentRep->create(
             $request->data['author'],
             $request->data['comment'],
             $request->entity_type,
@@ -38,20 +40,20 @@ class CommentController extends Controller
     }
 
     public function getForReview(Request $request) {
-        $responseData = CommentRep::getForReview($request->id, $request->offset);
+        $responseData = $this->commentRep->getForReview($request->id, $request->offset);
         $result = [];
-        foreach ($responseData as $key => $comment) {
-            $result[] = ResponseBodyBuilder::comment($comment);
-        }
+        $result = $responseData->map(function ($comment) {
+            return ResponseBodyBuilder::comment($comment);
+        });
         return response($result);
     }
 
     public function getForUser(Request $request) {
-        $responseData = CommentRep::getForUser($request->userId);
+        $responseData = $this->commentRep->getForUser($request->userId);
         $result = [];
-        foreach ($responseData as $key => $comment) {
-            $result[] = ResponseBodyBuilder::comment($comment);
-        }
+        $result = $responseData->map(function ($comment) {
+            return ResponseBodyBuilder::comment($comment);
+        });
         return response($result);
     }
 }

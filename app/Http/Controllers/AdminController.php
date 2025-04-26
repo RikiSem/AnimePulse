@@ -8,6 +8,12 @@ use Inertia\Inertia;
 
 class AdminController extends Controller
 {
+ 
+    protected ReviewController $reviewController;
+
+    public function __construct(ReviewController $reviewController) {
+        $this->reviewController = $reviewController;
+    }
     public function show(Request $request){
         $data = [];
         if (isset($request->page)) {
@@ -17,7 +23,7 @@ class AdminController extends Controller
                     break;
             }
         } else {
-            $data = (new ReviewController())->getOnModeration();
+            $data = $this->reviewController->getOnModeration();
         }
         return Inertia::render('AdminPage', [
             'pages' => Pages::$pages,

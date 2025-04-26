@@ -12,8 +12,12 @@ use Illuminate\Http\Request;
 
 class FavoriteController extends Controller
 {
+    protected UserAnimeListRep $userAnimeListRep;
+    public function __construct(UserAnimeListRep $userAnimeListRep) {
+        $this->userAnimeListRep = $userAnimeListRep;
+    }
     public function add(Request $request) {
-        $currentFavorite = UserAnimeListRep::getOne($request->user_id, $request->entity_id);
+        $currentFavorite = $this->userAnimeListRep->getOne($request->user_id, $request->entity_id);
         if (!empty($currentFavorite)) {
             if ($currentFavorite->favorite) {
                 $currentFavorite->favorite = false;
@@ -34,7 +38,7 @@ class FavoriteController extends Controller
     }
 
     public function remove(Request $request) {
-        UserAnimeListRep::removeFromFavorite($request->user_id, $request->entity_id);
+        $this->userAnimeListRep->removeFromFavorite($request->user_id, $request->entity_id);
         return response('done');
     }
 }

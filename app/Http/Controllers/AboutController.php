@@ -13,6 +13,12 @@ use Inertia\Inertia;
 
 class AboutController extends Controller
 {
+    protected AnimeRep $animeRep;
+    protected ReviewRep $reviewRep;
+    public function __construct(AnimeRep $animeRep, ReviewRep $reviewRep) {
+        $this->animeRep = $animeRep;
+        $this->reviewRep = $reviewRep;
+    }
 
     public const ABOUT_BG_IMG = 'about_bg.png';
     public const SOCIALS = [
@@ -27,8 +33,8 @@ class AboutController extends Controller
             'pages' => Pages::$pages,
             'text' => Texts::getAboutText(
                 $request->getHttpHost(),
-                AnimeRep::getAnimeCount(),
-                ReviewRep::getReviewCount()
+                $this->animeRep->getAnimeCount(),
+                $this->reviewRep->getReviewCount()
             ),
             'img' => Storage::SYSTEM_IMG_PATH . self::ABOUT_BG_IMG,
         ]);

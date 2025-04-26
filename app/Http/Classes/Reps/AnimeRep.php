@@ -9,42 +9,43 @@ use App\Models\Favorites;
 use App\Models\UserViews;
 use Illuminate\Database\Eloquent\Collection;
 
-class AnimeRep implements BaseRepositoryInterface
+class AnimeRep
 {
     public const ANIME_LIMIT_ON_PAGE = 30;
 
-    public static function getAnimeByExternalId(int $id): Collection
+    public function getAnimeByExternalId(int $id): Collection
     {
         return Anime::where('external_id', '=', $id)
             ->get();
     }
 
-    public static function isAnimeExistByExternalId(int $id): bool
+    public function isAnimeExistByExternalId(int $id): bool
     {
-        return !self::getAnimeByExternalId($id)->isEmpty();
+        return !$this->getAnimeByExternalId($id)->isEmpty();
     }
 
-    public static function getAnimeCount(): int
+    public function getAnimeCount(): int
     {
         return Anime::all()->count();
     }
 
-    public static function getOne(int $id): Anime
+    public function getOne(int $id): Anime
     {
         return Anime::find($id);
     }
 
-    public static function getSeasonAnime() {
+    public function getSeasonAnime(): Collection
+    {
         return Anime::where('in_current_season', '=', 1)
             ->get();
     }
 
-    public static function getAllWithoutLimits(): Collection
+    public function getAllWithoutLimits(): Collection
     {
         return Anime::all();
     }
 
-    public static function getAll(int $offset = 0, $filters = []): Collection
+    public function getAll(int $offset = 0, $filters = []): Collection
     {
         $result = Anime::limit(self::ANIME_LIMIT_ON_PAGE)
             ->offset($offset * self::ANIME_LIMIT_ON_PAGE);
@@ -85,7 +86,7 @@ class AnimeRep implements BaseRepositoryInterface
         return $result->get();
     }
 
-    public static function getUserAnime(int $userId = 0, array $filters = []): Collection
+    public function getUserAnime(int $userId = 0, array $filters = []): Collection
     {
         $result = UserViews::where('user_views.user_id', '=', $userId);
         if (!empty($filters)) {

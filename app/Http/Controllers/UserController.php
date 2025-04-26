@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Classes\Pages;
 use App\Http\Classes\Reps\CommentRep;
 use App\Http\Classes\Reps\ReviewRep;
+use App\Http\Classes\Reps\UserRep;
 use App\Http\Classes\ResponseBodyBuilder;
 use App\Models\Anime;
 use App\Models\User;
@@ -14,6 +15,14 @@ use Inertia\Inertia;
 
 class UserController extends Controller
 {
+    protected ReviewRep $reviewRep;
+    protected UserRep $userRep;
+
+    public function __construct(ReviewRep $reviewRep, UserRep $userRep)
+    {
+        $this->reviewRep = $reviewRep;
+        $this->userRep = $userRep;
+    }
     public function show(Request $request) {
         if ((int)$request->id === Auth::user()->id) {
             return redirect()->route('dashboard');
@@ -28,7 +37,7 @@ class UserController extends Controller
     }
 
     public function showUserReviews(Request $request) {
-        $responseData = ReviewRep::getForUser($request->id);
+        $responseData = $this->reviewRep->getForUser($request->id);
         $reviews = [];
         foreach ($responseData as $review) {
             $reviews[] = ResponseBodyBuilder::review($review);
@@ -41,7 +50,7 @@ class UserController extends Controller
     }
 
     public function showUserComments(Request $request) {
-        $responseData = CommentRep::getForUser($request->id);
+        $responseData = $this->reviewRep->getForUser($request->id);
         $comments = [];
         foreach ($responseData as $comment) {
             $comments[] = ResponseBodyBuilder::comment($comment);
@@ -58,7 +67,7 @@ class UserController extends Controller
     }
 
     public function changeAvatar(Request $request) {
-        $user = User::find(Auth::user()->id);
+        $user = $this->userRep->getOne(Auth::user()->id);
         $newAvatar = $request->file('avatar');
         $newAvatar->storeAs('imgs/avatars', $newAvatar->getClientOriginalName(),['disk' => 'public']);
         $user->avatar = $newAvatar->getClientOriginalName();

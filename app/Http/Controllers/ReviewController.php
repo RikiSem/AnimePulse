@@ -13,8 +13,14 @@ use Inertia\Inertia;
 
 class ReviewController extends Controller
 {
+    protected ReviewRep $reviewRep;
+
+    public function __construct(ReviewRep $reviewRep)
+    {
+        $this->reviewRep = $reviewRep;
+    }
     public function accept(Request $request) {
-        $review = ReviewRep::getOne($request->review_id);
+        $review = $this->reviewRep->getOne($request->review_id);
         $review->status = Reviews::MODERATION_SUCCESS;
         $review->update();
         NotificationController::sendNotification($review->author->id, 'Ваша рецензия прошла модерацию');
@@ -22,7 +28,7 @@ class ReviewController extends Controller
     }
 
     public function reject(Request $request) {
-        $review = ReviewRep::getOne($request->review_id);
+        $review = $this->reviewRep->getOne($request->review_id);
         $review->reject_reason = $request->reason;
         $review->status = Reviews::MODERATION_FAIL;
         $review->update();
@@ -31,7 +37,7 @@ class ReviewController extends Controller
     }
 
     public function show(Request $request) {
-        $review = ResponseBodyBuilder::review(ReviewRep::getOne($request->id));
+        $review = ResponseBodyBuilder::review($this->reviewRep->getOne($request->id));
         return Inertia::render('ReviewPage',
             [
                 'id' => $request->id,
@@ -42,7 +48,7 @@ class ReviewController extends Controller
     }
 
     public function update(Request $request) {
-        $review = ReviewRep::getOne($request->id);
+        $review = $this->reviewRep->getOne($request->id);
         $review->html = $request->html;
         $reviewText = '';
         foreach ($request->text as $text) {
@@ -65,12 +71,12 @@ class ReviewController extends Controller
     }
 
     public function delete(Request $request) {
-        ReviewRep::deleteById($request->id);
+        $this->reviewRep->deleteById($request->id);
         return response('done');
     }
 
     public function getForAnime(Request $request) {
-        $responseData = ReviewRep::getForAnime($request->id, $request->offset);
+        $responseData = $this->reviewRep->getForAnime($request->id, $request->offset);
         $result = [];
         /**
          * @var int $key
@@ -83,7 +89,7 @@ class ReviewController extends Controller
     }
 
     public function getUserReviews(Request $request) {
-        $responseData = ReviewRep::getForUser($request->userId, $request->offset);
+        $responseData = $this->reviewRep->getForUser($request->userId, $request->offset);
         $result = [];
         /**
          * @var int $key
@@ -102,7 +108,7 @@ class ReviewController extends Controller
             $finalMark += (int)$mark['mark'];
         }
         $finalMark = ceil($finalMark / count($request->marks));
-        ReviewRep::createNew($request, $midtermMarks, $finalMark);
+        $this->reviewRep->createNew($request, $midtermMarks, $finalMark);
         NotificationController::sendNotification(
             $request->userId,
             Texts::EVENT_TEXTS['review_created']
@@ -111,7 +117,7 @@ class ReviewController extends Controller
     }
 
     public function getOnModeration() {
-        $responseData = ReviewRep::getOnModeration();
+        $responseData = $this->reviewRep->getOnModeration();
         $result = [];
         foreach ($responseData as $key => $review) {
             $result[] = ResponseBodyBuilder::review($review);

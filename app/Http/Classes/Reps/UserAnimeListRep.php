@@ -10,13 +10,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserAnimeListRep
 {
-    public static function getOne(int $userId, int $animeId) {
+    public function getOne(int $userId, int $animeId) {
         return UserAnimeList::where('user_id', '=', $userId)
             ->where('anime_id', '=', $animeId)
             ->first();
     }
 
-    public static function getUserAnimeList(int $userId, array $filters = []) {
+    public function getUserAnimeList(int $userId, array $filters = []) {
         $result = UserAnimeList::where('user_id', '=', $userId);
         if (!empty($filters)) {
             $result->leftJoin('animes', 'animes.id', '=', 'user_anime_lists.anime_id');
@@ -48,7 +48,7 @@ class UserAnimeListRep
         return $result->get();
     }
 
-    public static function createNewList(int $userId, int $animeId, string $status) {
+    public function createNewList(int $userId, int $animeId, string $status) {
         $animeList = new UserAnimeList();
         $animeList->user_id = $userId;
         $animeList->anime_id = $animeId;
@@ -57,12 +57,12 @@ class UserAnimeListRep
         return $animeList;
     }
 
-    public static function setAnimeInList(int $userId, int $animeId, string $status) {
+    public function setAnimeInList(int $userId, int $animeId, string $status) {
         $animeList = UserAnimeList::where('user_id', '=', $userId)
         ->where('anime_id', '=', $animeId)
             ->first();
         if (empty($animeList)) {
-            self::createNewList(
+            $this->createNewList(
                 $userId,
                 $animeId,
                 $status
@@ -73,7 +73,7 @@ class UserAnimeListRep
         }
     }
 
-    public static function removeFromList(int $userId, int $animeId) {
+    public function removeFromList(int $userId, int $animeId) {
         $animeList = UserAnimeList::where('user_id', '=', $userId)
             ->where('anime_id', '=', $animeId)
             ->first();
@@ -81,7 +81,7 @@ class UserAnimeListRep
         $animeList->update();
     }
 
-    public static function setFavorite(int $userId, int $animeId) {
+    public function setFavorite(int $userId, int $animeId) {
         $animeList = UserAnimeList::where('user_id', '=', $userId)
             ->where('anime_id', '=', $animeId)
             ->first();
@@ -98,7 +98,7 @@ class UserAnimeListRep
         }
     }
 
-    public static function removeFromFavorite(int $userId, int $animeId) {
+    public function removeFromFavorite(int $userId, int $animeId) {
         $animeList = UserAnimeList::where('user_id', '=', $userId)
             ->where('anime_id', '=', $animeId)
             ->first();
