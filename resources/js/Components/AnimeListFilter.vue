@@ -4,8 +4,8 @@
             <check-box-list class="mx-1" @itemChanged="event => this.filterData.status = event.target.value" :items="animeStatuses">Статус аниме</check-box-list>
             <check-box-list class="mx-1" v-if="userId > 0" @itemChanged="event => this.filterData.view_status = event.target.value" :items="statusesForUser">Статус аниме у пользователя</check-box-list>
             <multiple-select @selectedTags="selectedTags => this.filterData.tags = selectedTags" class="mx-1" :items="tags">Жанры</multiple-select>
-            <p><check-box-input v-if="userId > 0" @statusChange="status => this.filterData.favoriteStatus = status" name="isFavorite">Любимое</check-box-input></p>
-            <p><check-box-input @statusChange="status => this.filterData.newest = status" name="newest">Сначала новое</check-box-input></p>
+            <p class="filter-checkbox"><check-box-input v-if="userId > 0" @statusChange="status => this.filterData.favoriteStatus = status" name="isFavorite">Любимое</check-box-input></p>
+            <p class="filter-checkbox"><check-box-input @statusChange="status => this.filterData.newest = status" name="newest">Сначала новое</check-box-input></p>
         </div>
         <div class="my-3" style="display: flex;">
             <text-input @input="event => this.filterData.name = event.target.value" type="text" class="bg-color-first h-16 text-input align-self-center anime-name-input" placeholder="Название аниме"></text-input>
@@ -102,5 +102,8 @@ export default {
 .anime-name-input{
     width: 100%;
     min-width: 5rem;
+}
+.filter-checkbox{
+    margin: 5px;
 }
 </style>

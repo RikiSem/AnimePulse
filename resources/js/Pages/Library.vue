@@ -6,10 +6,15 @@
     <page-template :pages="pages" :user="$attrs.auth.user">
         <template v-slot:content>
             <anime-list-filter @filterData="filterData => this.applyFilter(filterData)" :user-id="this.$props.userId" :statuses-for-user="statusForUser" :anime-statuses="animeStatuses" :filter-route="'library.all'" class="mx-5 my-5 default-border-color-sec p-6"></anime-list-filter>
-            <div class="animes">
-                <anime-card v-for="anime in this.result" :anime="anime"></anime-card>
+            <div v-if="this.result.length > 0">
+                <div class="animes">
+                    <anime-card v-for="anime in this.result" :anime="anime"></anime-card>
+                </div>
+                <btn @click="setOffsetAndGet" style="width:100%;">Еще аниме</btn>
             </div>
-            <btn @click="setOffsetAndGet" style="width:100%;">Еще аниме</btn>
+            <div v-else style="text-align: center">
+                Ничего не найдено
+            </div>
         </template>
     </page-template>
 </template>

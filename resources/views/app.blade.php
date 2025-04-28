@@ -23,6 +23,7 @@
         <link rel="icon" type="image/png" href="/favicon.png"/>
         <link rel="icon" type="image/png" href="https://example.com/favicon.png"/>
         <meta name="yandex-verification" content="f647e9ed799a295f" />
+        <meta name="google-site-verification" content="aGTsI0Wy3STyStpFhs60osGhhFP0vi54Nwy06X2Csp8" />
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
 

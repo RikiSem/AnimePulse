@@ -33,7 +33,7 @@ class GetAnime extends Command
     /**
      * Execute the console command.
      */
-    public function handle(Client $client)
+    public function handle(Client $client, AnimeRep $animeRep)
     {
         $this->info('start');
         for($page = self::MIN_PAGE; $page <= self::MAX_PAGE; $page ++) {
@@ -42,7 +42,7 @@ class GetAnime extends Command
             $responseData = json_decode($client->get($request,['verify' => false])->getBody());
             if (!empty($responseData)) {
                 foreach ($responseData as $animeData) {
-                    if (AnimeRep::isAnimeExistByExternalId($animeData->id)) {
+                    if ($animeRep->isAnimeExistByExternalId($animeData->id)) {
                         continue;
                     }
                     sleep(1);

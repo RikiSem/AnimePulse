@@ -24,7 +24,7 @@ class GetAnimeUpdates extends Command
      *
      * @var string
      */
-    protected $signature = 'app:get-anime-updates';
+    protected $signature = 'app:get-anime-updates {pagesLimit}';
 
     /**
      * The console command description.
@@ -38,13 +38,17 @@ class GetAnimeUpdates extends Command
     /**
      * Execute the console command.
      */
-    public function handle(Client $client)
+    public function handle(Client $client, AnimeRep $animeRep)
     {
+        $pageLimit = (int)$this->argument('pagesLimit');
         Log::info('start');
-        for($page = GetAnime::MIN_PAGE; $page <= self::PAGE_LIMIT ; $page ++) {
+        for($page = GetAnime::MIN_PAGE; $page > 0; $page ++) {
+            if ($page === $pageLimit + 1) {
+                break;
+            }
+            sleep(1);
             $message = 'get page ' . $page;
             $this->info($message);
-            //Log::info($message);
             $request = sprintf('https://shikimori.one/api/animes?limit=50&order=id_desc&page=%s', $page);
             $responseData = json_decode($client->get($request,['verify' => false])->getBody());
             if (!empty($responseData)) {
@@ -52,7 +56,6 @@ class GetAnimeUpdates extends Command
                     sleep(1);
                     $message = sprintf('get anime %s from page %s', $animeData->id , $page);
                     $this->info($message);
-                    //Log::info($message);
                     $request = sprintf('https://shikimori.one/api/animes/%s', $animeData->id);
                     $responseData = $client->get($request,['verify' => false]);
 
@@ -60,20 +63,18 @@ class GetAnimeUpdates extends Command
                         continue;
                     }
                     $responseData = json_decode($responseData->getBody());
-                    if (is_null($responseData->aired_on) || (int) explode('-', $responseData->aired_on)[0] === Carbon::now()->year) {
-                        if (AnimeRep::isAnimeExistByExternalId($animeData->id)) {
+                        if ($animeRep->isAnimeExistByExternalId($animeData->id)) {
                             $message = sprintf('updating anime %s', $animeData->id);
                             $this->info($message);
-                            //Log::info($message);
-                            $this->updateAnime(AnimeRep::getAnimeByExternalId($animeData->id)->first(), $responseData);
+                            $this->updateAnime($animeRep->getAnimeByExternalId($animeData->id)->first(), $responseData);
                             continue 2;
                         }
                         $message = sprintf('creating anime %s', $animeData->id);
                         $this->createNewAnime(new Anime(), $responseData);
-                    }
                     $this->info($message);
-                    //Log::info($message);
                 }
+            } else {
+                break;
             }
         }
         Log::info('end');

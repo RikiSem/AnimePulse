@@ -112,6 +112,18 @@
                                 {{animeData.name}}
                             </td>
                         </tr>
+                        <tr>
+                            <th>
+                                Альтернативные названия
+                            </th>
+                            <td class="table-content">
+                                <template v-for="alterName in this.animeData.alter_names">
+                                    <div style="margin: 5px 0 5px 0;">
+                                        <p style="width: fit-content; padding: 3px;margin: 0 0 0 auto;" v-if="alterName !== null">{{ alterName }}</p>
+                                    </div>
+                                </template>
+                            </td>
+                        </tr>
                         <tr v-if="animeData.tags !== null">
                             <th>
                                 Жанры

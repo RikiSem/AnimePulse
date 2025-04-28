@@ -75,7 +75,7 @@ class AnimeRep
                         break;
                     case 'newest':
                         if ($value) {
-                            $result->orderBy('id', 'desc');
+                            $result->orderBy('release_date', 'desc');
                         }
                         break;
                     default:

@@ -27,9 +27,9 @@ class RewriteDescription extends Command
     /**
      * Execute the console command.
      */
-    public function handle(Client $client)
+    public function handle(Client $client, AnimeRep $animeRep)
     {
-        foreach (AnimeRep::getAllWithoutLimits() as $index => $anime) {
+        foreach ($animeRep->getAllWithoutLimits() as $index => $anime) {
             if (is_null($anime->description) || $anime->id < $this->argument('startFromId')) {
                 continue;
             }

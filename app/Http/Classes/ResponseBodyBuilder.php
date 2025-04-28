@@ -116,7 +116,18 @@ class ResponseBodyBuilder
             'id' => $anime->id,
             'external_id' => $anime->external_id,
             'name' => empty($anime->name) ? json_decode($anime->alter_names)[0] : $anime->name,
-            'alter_names' => json_decode($anime->alter_names),
+            'alter_names' => array_filter(array_map(function ($animeName) {
+                $type = gettype($animeName);
+                $result = '';
+                if ($type === 'string') {
+                    $result = $animeName;
+                } else if ($type === 'array') {
+                    if (isset($animeName[0]) && $animeName[0] !== null && !empty($animeName[0])) {
+                        $result = $animeName[0];
+                    }
+                }
+                return $result;
+            },json_decode( $anime->alter_names))),
             'description' => $anime->description,
             'tags' => !empty($anime->tags) ? explode(' ', $anime->tags) : null,
             'rate' => round($anime->userRate->select('user_rate')->sum('user_rate') / ($anime->userRate->count() === 0 ? 1 : $anime->userRate->count()), 2),

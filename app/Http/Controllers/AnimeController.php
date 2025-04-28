@@ -124,7 +124,7 @@ class AnimeController extends Controller
         try {
             $validated = $request->validate([
                 'id' => 'required|integer|exists:animes,id',
-                'user_id' => 'required|integer|exists:users,id',
+                'user_id' => 'required|integer',
             ]);
 
             $responseData = $this->animeRep->getOne($validated['id']);
@@ -132,7 +132,7 @@ class AnimeController extends Controller
 
             $result = response($result);
         } catch (Exception $e) {
-            $result = response()->json(['error' => 'Failed to get anime'], 500);
+            $result = response()->json(['error' => $e->getMessage()], 500);
         }
 
         return $result;
@@ -142,7 +142,7 @@ class AnimeController extends Controller
         try {
             $validated = $request->validate([
                 'params' => 'required|array',
-                'userId' => 'required|integer|exists:users,id',
+                'userId' => 'required|integer',
             ]);
 
             $responseData = $this->userAnimeListRep->getUserAnimeList($validated['userId'], $validated['params']);
@@ -162,7 +162,7 @@ class AnimeController extends Controller
         try {
             $validated = $request->validate([
                 'animeName' => 'required|string',
-                'userId' => 'required|integer|exists:users,id',
+                'userId' => 'required|integer',
                 'status' => 'required|string',
                 'view_status' => 'required|string',
                 'animeStatus' => 'required|string',

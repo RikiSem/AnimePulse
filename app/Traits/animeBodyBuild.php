@@ -50,8 +50,13 @@ trait animeBodyBuild
         $anime->count_series = $responseData->episodes;
 
         $posterRequest = 'https://shikimori.one' . $responseData->image->original;
+        if (explode('/', $responseData->image->original)[3] === 'missing_original.jpg') {
+            if (isset($responseData->videos[0]->image_url)) {
+                $posterRequest = $responseData->videos[0]->image_url;
+            }
+        }
         $poster = new File($posterRequest, false);
-        $fileName = explode('?', $poster->getFilename())[0];
+        $fileName = explode('?', $anime->external_id.'_'.$poster->getFilename())[0];
         file_put_contents(storage_path('app/public/imgs/posters/') . $fileName, file_get_contents($posterRequest));
         $anime->poster = $fileName;
 
