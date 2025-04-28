@@ -94,10 +94,10 @@ class Season
         return $result;
     }
 
-    public static function isAnimeInCurrentSeason(int $animeReleaseMonth): bool
+    public static function isAnimeInCurrentSeason(int $animeReleaseMonth, int $animeReleaseYear): bool
     {
         $currentSeason = self::getSeasonByMonthNumber(Carbon::now()->month);
         $animeReleaseMonth = self::getSeasonByMonthNumber($animeReleaseMonth);
-        return $animeReleaseMonth === $currentSeason;
+        return $animeReleaseMonth === $currentSeason && $animeReleaseYear === Carbon::now()->year;
     }
 }

@@ -19,7 +19,7 @@ class CommentRep
     {
         return Comment::all();
     }
-    public function getForAnime(int $id, int $offset = 0) {
+    public function getFoxrAnime(int $id, int $offset = 0) {
         return Comment::where('commentable_id', '=', $id)
             ->where('commentable_type', '=', Anime::ENTITY_TYPE)
             ->limit(Comment::LIMIT_ON_PAGE)

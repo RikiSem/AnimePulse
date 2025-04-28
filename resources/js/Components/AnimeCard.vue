@@ -8,7 +8,7 @@
             </div>
             <div class="anime-card-text">
                 <div class="anime-info">
-                    <div class="anime-name">
+                    <div class="anime-name" :title="anime.name">
                         <p class="h3 font-semibold">
                             {{ anime.name }}
                         </p>
@@ -46,6 +46,18 @@
                         {{ tag }}
                     </div>
                 </div>
+                <div class="release-date">
+                    <div>
+                        <p class="font-semibold">
+                            Дата релиза:&nbsp;
+                        </p>
+                    </div>
+                    <div>
+                        <p>
+                            {{ anime.release_date }}
+                        </p>
+                    </div>
+                </div>
                 <!--<div class="desc">
                     <p>
                         {{ anime.description }}
@@ -73,6 +85,11 @@ import Btn from "@/Components/Btn.vue";
 export default {
     name: "AnimeCard",
     components: {Btn},
+    data() {
+        return {
+            showFullAnimeName: false,
+        }
+    },
     props:{
         anime:{
             type: Object
@@ -84,8 +101,8 @@ export default {
 <style scoped>
 .card{
     background-color: var(--color-first);
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 50% 50%;
     margin: 10px;
     border-radius: 1.5rem;
     overflow: hidden;
@@ -93,14 +110,15 @@ export default {
     text-overflow: ellipsis;
     width: 35.8rem;
 }
-
 .anime-card-img{
+    height: 25rem;
     display: flex;
     justify-content: center;
+    overflow: hidden;
 }
 img{
-    min-width: 18rem;
-    height: 400px;
+    margin: auto 0 auto 0;
+    width: 500px;
 }
 .anime-card-text{
     padding-left: 10px;
@@ -133,7 +151,16 @@ td{
     flex-direction: column;
     flex-wrap: wrap;
 }
-.anime-name, .anime-rate, .anime-type{
+.anime-name{
+    margin: 5px 7px 5px 7px;
+    max-height: 100px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.anime-rate, .anime-type, .release-date{
     display: flex;
     margin: 5px 7px 5px 7px;
 }
@@ -147,6 +174,7 @@ td{
 }
 @media only screen and (max-width: 1530px){
     .card{
+        display: flex;
         padding: 0px 0px 20px 0px;
         flex-wrap: wrap;
         width: 18.5rem;

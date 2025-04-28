@@ -30,15 +30,18 @@ class SelectAnimeOnCurrentSeason extends Command
      */
     public function handle()
     {
+        $this->info('start');
         Anime::where('release_year', '=', Carbon::now()->year)->chunk(50, function (Collection $animes) {
             foreach ($animes as $anime) {
                 try {
-                    $anime->in_current_season = Season::isAnimeInCurrentSeason($anime->release_month);
+                    $anime->in_current_season = Season::isAnimeInCurrentSeason($anime->release_month, $anime->release_year);
                     $anime->update();
+                    $this->info(sprintf('аниме %s, год релиза - %s, месяц релиза - %s, в текущем сезоне - %s', $anime->id, $anime->release_year, $anime->release_month, $anime->in_current_season));
                 } catch (\Exception $e) {
                     continue;
                 }
             }
         });
+        $this->info('end');
     }
 }

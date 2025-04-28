@@ -12,6 +12,7 @@ use App\Models\Reviews;
 use App\Models\User;
 use App\Models\UserAnimeList;
 use App\Models\UserViews;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -142,7 +143,7 @@ class ResponseBodyBuilder
             ),
             'other_rates' => $anime->other_rates,
             'link_to-watch' => $anime->link_to,
-            'release_date' => $anime->release_date,
+            'release_date' => Carbon::parse($anime->release_date)->format('d.m.Y'),
             'release_day' => $anime->release_day,
             'release_month' => $anime->release_month,
             'release_year' => $anime->release_year,
