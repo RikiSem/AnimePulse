@@ -18,7 +18,7 @@ class ErrorControler extends Controller
             'img' => Storage::SYSTEM_IMG_PATH . self::PAGE_404,
             'pages' => Pages::$pages,
         ])
-            ->toResponse(request())
+            ->toResponse($request)
             ->setStatusCode(404);
     }
 }
