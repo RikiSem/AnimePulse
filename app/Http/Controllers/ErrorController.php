@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
 use Inertia\Inertia;
 
-class ErrorControler extends Controller
+class ErrorController extends Controller
 {
 
     public const PAGE_404 = '404_page.png';

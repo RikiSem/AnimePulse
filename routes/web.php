@@ -4,7 +4,7 @@ use App\Http\Controllers\AboutController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AnimeController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\ErrorControler;
+use App\Http\Controllers\ErrorController;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\LibraryController;
@@ -66,6 +66,6 @@ Route::middleware('auth')->controller(ProfileController::class)->group(function 
     Route::delete('/profile', 'destroy')->name('profile.destroy');
 });
 
-Route::fallback([ErrorControler::class, 'show404Page']);
+Route::fallback([ErrorController::class, 'show404Page']);
 
 require __DIR__.'/auth.php';
