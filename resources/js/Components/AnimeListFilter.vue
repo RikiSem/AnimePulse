@@ -2,6 +2,7 @@
     <div class="filter">
         <div class="anime-filter">
             <check-box-list class="mx-1" @itemChanged="event => this.filterData.status = event.target.value" :items="animeStatuses">Статус аниме</check-box-list>
+            <check-box-list class="mx-1" @itemChanged="event => this.filterData.type = event.target.value" :items="animeTypes">Тип аниме</check-box-list>
             <check-box-list class="mx-1" v-if="userId > 0" @itemChanged="event => this.filterData.view_status = event.target.value" :items="statusesForUser">Статус аниме у пользователя</check-box-list>
             <multiple-select @selectedTags="selectedTags => this.filterData.tags = selectedTags" class="mx-1" :items="tags">Жанры</multiple-select>
             <p class="filter-checkbox"><check-box-input v-if="userId > 0" @statusChange="status => this.filterData.favoriteStatus = status" name="isFavorite">Любимое</check-box-input></p>
@@ -34,6 +35,7 @@ export default {
                 status: '',
                 view_status: '',
                 name: '',
+                type: '',
                 tags: [],
                 favoriteStatus: false,
                 newest: false,
@@ -46,6 +48,9 @@ export default {
         userId:{
             type: Number,
             default: 0,
+        },
+        animeTypes: {
+            type: Array,
         },
         animeStatuses: {
             type: Array,

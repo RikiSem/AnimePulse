@@ -1,13 +1,39 @@
 <template>
     <div class="menu" v-if="winInnerWidth > minInnerWidth">
-        <a v-for="page in pages" :href=route(page.path)>
-            <menu-btn class="btn" v-if="page.permission === 'admin' && this.isAdmin">
-                {{ page.title }}
-            </menu-btn>
-            <menu-btn class="btn" v-else-if="page.permission !== 'admin'">
-                {{ page.title }}
-            </menu-btn>
-        </a>
+        <template v-for="page in pages">
+            <template v-if="page.dropdown.length === 0">
+                <a :href=route(page.path)>
+                    <menu-btn class="btn" v-if="page.permission === 'admin' && this.isAdmin">
+                        {{ page.title }}
+                    </menu-btn>
+                    <menu-btn class="btn" v-else-if="page.permission !== 'admin'">
+                        {{ page.title }}
+                    </menu-btn>
+                </a>
+            </template>
+            <template v-else>
+                <dropdown align="center">
+                    <template #trigger>
+                        <menu-btn class="btn" v-if="page.permission === 'admin' && this.isAdmin">
+                            {{ page.title }}
+                        </menu-btn>
+                        <menu-btn class="btn" v-else-if="page.permission !== 'admin'">
+                            {{ page.title }}
+                        </menu-btn>
+                    </template>
+                    <template #content>
+                        <a v-for="subPage in page.dropdown" :href=route(subPage.path)>
+                            <menu-btn class="sub-btn" v-if="subPage.permission === 'admin' && this.isAdmin">
+                                {{ subPage.title }}
+                            </menu-btn>
+                            <menu-btn class="sub-btn" v-else-if="subPage.permission !== 'admin'">
+                                {{ subPage.title }}
+                            </menu-btn>
+                        </a>
+                    </template>
+                </dropdown>
+            </template>
+        </template>
     </div>
     <div class="menu" v-else>
         <dropdown align="center" class="dd">
@@ -30,11 +56,40 @@
             </template>
             <template #content>
                 <div style="display: flex;flex-direction: column">
-                    <a v-for="page in pages" :href=route(page.path)>
-                        <menu-btn class="btn">
-                            {{ page.title }}
-                        </menu-btn>
-                    </a>
+                    <template v-for="page in pages" :href=route(page.path)>
+                        <template v-if="page.dropdown.length === 0">
+                            <a :href=route(page.path)>
+                                <menu-btn class="btn" v-if="page.permission === 'admin' && this.isAdmin">
+                                    {{ page.title }}
+                                </menu-btn>
+                                <menu-btn class="btn" v-else-if="page.permission !== 'admin'">
+                                    {{ page.title }}
+                                </menu-btn>
+                            </a>
+                        </template>
+                        <template v-else>
+                            <dropdown align="center">
+                                <template #trigger>
+                                    <menu-btn class="btn" v-if="page.permission === 'admin' && this.isAdmin">
+                                        {{ page.title }}
+                                    </menu-btn>
+                                    <menu-btn class="btn" v-else-if="page.permission !== 'admin'">
+                                        {{ page.title }}
+                                    </menu-btn>
+                                </template>
+                                <template #content>
+                                    <a v-for="subPage in page.dropdown" :href=route(subPage.path)>
+                                        <menu-btn class="sub-btn" v-if="subPage.permission === 'admin' && this.isAdmin">
+                                            {{ subPage.title }}
+                                        </menu-btn>
+                                        <menu-btn class="sub-btn" v-else-if="subPage.permission !== 'admin'">
+                                            {{ subPage.title }}
+                                        </menu-btn>
+                                    </a>
+                                </template>
+                            </dropdown>
+                        </template>
+                    </template>
                 </div>
             </template>
         </dropdown>
@@ -81,11 +136,15 @@ export default {
 .btn{
     width: 100%;
 }
+.sub-btn{
+    padding: 5px;
+    width: 6.25rem;
+}
 @media only screen and (max-width: 1530px){
     .menu{
         display: flex;
     }
-    .btn{
+    .btn, .sub-btn{
         min-height: 5rem;
     }
 }

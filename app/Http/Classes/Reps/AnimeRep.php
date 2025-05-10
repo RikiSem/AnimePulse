@@ -67,6 +67,19 @@ class AnimeRep
                             $result->where('tags', 'like', '%'. $tag .'%');
                         }
                         break;
+                    case 'name':
+                        if ($value) {
+                            $result->where(function ($result) use($value) {
+                                $result->where('name', 'like', '%'. $value .'%')
+                                    ->orWhere('alter_names', 'like', '%'. $value .'%');
+                            });
+                        }
+                        break;
+                    case 'type':
+                        if ($value) {
+                            $result->where('animes.type', '=', $filters['type']);
+                        }
+                        break;
                     case 'favoriteStatus':
                         if ($value) {
                             $result->leftJoin('favorites', 'favorites.entity_id', '=', 'animes.id');
@@ -75,7 +88,7 @@ class AnimeRep
                         break;
                     case 'newest':
                         if ($value) {
-                            $result->orderBy('release_date', 'desc');
+                            $result->orderBy('release_year', 'desc');
                         }
                         break;
                     default:

@@ -13,6 +13,6 @@ Artisan::command('inspire', function () {
 
 //Schedule::job(new GetAnimeUpdates(), 'animeUpdatesQueue')->daily();
 
-Schedule::command('app:get-anime-updates 50')->dailyAt('00:30')->runInBackground();
+Schedule::command('app:get-anime-updates 100 yes')->dailyAt('00:30')->runInBackground();
 
 Schedule::command('app:select-anime-on-current-season')->weekly()->runInBackground();

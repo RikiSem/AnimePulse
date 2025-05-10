@@ -32,7 +32,7 @@ class AboutController extends Controller
             'social' => self::SOCIALS,
             'pages' => Pages::$pages,
             'text' => Texts::getAboutText(
-                $request->getHttpHost(),
+                config('app.name'),
                 $this->animeRep->getAnimeCount(),
                 $this->reviewRep->getReviewCount()
             ),

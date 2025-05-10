@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AnimeController;
+use App\Http\Controllers\AnimeLibraryController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\MangaLibraryController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Middleware\CheckRequestLocal;
 use Illuminate\Http\Request;
@@ -47,7 +49,12 @@ Route::middleware(CheckRequestLocal::class)->group(function () {
     });
 
     Route::prefix('library')->group(function () {
-        Route::post('/all', [\App\Http\Controllers\LibraryController::class, 'all'])->name('library.all');
+        Route::prefix('manga')->group(function () {
+            Route::post('/all', [MangaLibraryController::class, 'all'])->name('library.manga.all');
+        });
+        Route::prefix('anime')->group(function () {
+            Route::post('/all', [AnimeLibraryController::class, 'all'])->name('library.anime.all');
+        });
     });
 
     Route::prefix('reaction')->group(function () {

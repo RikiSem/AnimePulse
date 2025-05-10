@@ -7,6 +7,7 @@ namespace App\Http\Classes;
 use App\Models\Anime;
 use App\Models\Comment;
 use App\Models\Favorites;
+use App\Models\Manga;
 use App\Models\ReviewReaction;
 use App\Models\Reviews;
 use App\Models\User;
@@ -18,6 +19,12 @@ use Illuminate\Support\Facades\Storage;
 
 class ResponseBodyBuilder
 {
+    public static function manga(Manga $manga): array
+    {
+        return [
+
+        ];
+    }
     public static function review(Reviews $review): array
     {
         return [
@@ -128,22 +135,27 @@ class ResponseBodyBuilder
                     }
                 }
                 return $result;
-            },json_decode( $anime->alter_names))),
+            },$anime->alter_names)),
             'description' => $anime->description,
-            'tags' => !empty($anime->tags) ? explode(' ', $anime->tags) : null,
+            'tags' => !empty($anime->tags) ? $anime->tags : null,
             'rate' => round($anime->userRate->select('user_rate')->sum('user_rate') / ($anime->userRate->count() === 0 ? 1 : $anime->userRate->count()), 2),
             'count_series' => $anime->count_series,
             'status' => Anime::ANIME_STATUSES[$anime->status]['title'],
-            'studio' => !empty(json_decode($anime->studio)) ? json_decode($anime->studio) : null,
-            'type' => Anime::ANIME_TYPES[$anime->type],
+            'studio' => !empty($anime->studio) ? $anime->studio : null,
+            'type' => in_array($anime->type, array_keys(Anime::ANIME_TYPES)) ? Anime::ANIME_TYPES[$anime->type] : Anime::ANIME_TYPES[Anime::ANIME_TYPES_UNKNOWN],
             'poster' => Storage::url('imgs/posters/' . $anime->poster),
             'season'=> sprintf( '%s %s',
-                Season::getSeason(explode('-' ,$anime->season)[0] ?? '0'),
-                explode('-' , $anime->season)[1] ?? '0'
+                 Season::getSeason(explode('-' ,$anime->season)[0] ?? '0'),
+                $anime->release_year
             ),
             'other_rates' => $anime->other_rates,
             'link_to-watch' => $anime->link_to,
-            'release_date' => Carbon::parse($anime->release_date)->format('d.m.Y'),
+            'release_date' => Carbon::parse(sprintf(
+                '%s.%s.%s', 
+                $anime->release_day, 
+                $anime->release_month, 
+                $anime->release_year, 
+            ))->format('d.m.Y'),
             'release_day' => $anime->release_day,
             'release_month' => $anime->release_month,
             'release_year' => $anime->release_year,

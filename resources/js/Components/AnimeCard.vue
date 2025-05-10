@@ -109,16 +109,17 @@ export default {
     min-height: 25rem;
     text-overflow: ellipsis;
     width: 35.8rem;
+    height: fit-content;
 }
 .anime-card-img{
     height: 25rem;
     display: flex;
     justify-content: center;
-    overflow: hidden;
 }
 img{
     margin: auto 0 auto 0;
     width: 500px;
+    height: 25rem;
 }
 .anime-card-text{
     padding-left: 10px;
@@ -178,6 +179,7 @@ td{
         padding: 0px 0px 20px 0px;
         flex-wrap: wrap;
         width: 18.5rem;
+        height: fit-content;
     }
     .anime-card-img{
         width: 100%;

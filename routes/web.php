@@ -3,11 +3,13 @@
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AnimeController;
+use App\Http\Controllers\AnimeLibraryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ErrorController;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\LibraryController;
+use App\Http\Controllers\MangaLibraryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserController;
@@ -27,7 +29,9 @@ Route::prefix('review')->group(function () {
 });
 
 Route::prefix('library')->group(function () {
-    Route::get('/show', [LibraryController::class, 'show'])->name('library');
+    //Route::get('/show', [LibraryController::class, 'show'])->name('library');
+    Route::get('/anime', [AnimeLibraryController::class, 'show'])->name('library.anime');
+    Route::get('/manga', [MangaLibraryController::class, 'show'])->name('library.manga');
 });
 
 Route::prefix('video')->group(function () {

@@ -13,6 +13,8 @@ class Anime extends Model
     public const SYSTEM_ANIME_STATUS_ONGOING = 'ongoing';
     public const SYSTEM_ANIME_STATUS_DONE = 'released';
     public const SYSTEM_ANIME_STATUS_ANNOUNCEMENT = 'anons';
+    public const SYSTEM_ANIME_STATUS_CANCELED = 'canceled';
+    public const SYSTEM_ANIME_STATUS_STOPPED = 'stopped';
 
     public const SYSTEM_ANIME_STATUS_FOR_USER_WILL_WATCH = 'will_watch';
     public const SYSTEM_ANIME_STATUS_FOR_USER_WATCH = 'watch';
@@ -20,14 +22,53 @@ class Anime extends Model
     public const SYSTEM_ANIME_STATUS_FOR_USER_DROPPED = 'dropped';
     public const SYSTEM_ANIME_STATUS_FOR_USER_FAVORITE = 'favorite';
 
-    public const ANIME_TYPES_SERIAL = 'tv';
-    public const ANIME_TYPES_OVA = 'ova';
-    public const ANIME_TYPES_ONA = 'ona';
-    public const ANIME_TYPES_FULL = 'movie';
+    public const ANIME_TYPES_SERIAL = 'TV';
+    public const ANIME_TYPES_OVA = 'OVA';
+    public const ANIME_TYPES_ONA = 'ONA';
+    public const ANIME_TYPES_FULL = 'MOVIE';
     public const ANIME_TYPES_PV = 'pv';
     public const ANIME_TYPES_CM = 'cm';
-    public const ANIME_TYPES_SPECIAL = 'special';
-    public const ANIME_TYPES_TV_SPECIAL = 'tv_special';
+    public const ANIME_TYPES_SPECIAL = 'SPECIAL';
+    public const ANIME_TYPES_TV_SHORT = 'TV_SHORT';
+    public const ANIME_TYPES_MUSIC = 'MUSIC';
+    public const ANIME_TYPES_UNKNOWN = 'UNKNOWN';
+
+    public const UNKNOWN_INFO = 'Не известно';
+
+    public const ANIME_TYPES_FILTER = [
+        [
+            'title' => 'Выберите тип',
+            'value' => ''
+        ],
+        [
+            'title' => self::ANIME_TYPES[self::ANIME_TYPES_FULL],
+            'value' => self::ANIME_TYPES_FULL
+        ],
+        [
+            'title' => self::ANIME_TYPES[self::ANIME_TYPES_SERIAL],
+            'value' => self::ANIME_TYPES_SERIAL
+        ],
+        [
+            'title' => self::ANIME_TYPES[self::ANIME_TYPES_OVA],
+            'value' => self::ANIME_TYPES_OVA
+        ],
+        [
+            'title' => self::ANIME_TYPES[self::ANIME_TYPES_ONA],
+            'value' => self::ANIME_TYPES_ONA
+        ],
+        [
+            'title' => self::ANIME_TYPES[self::ANIME_TYPES_SPECIAL],
+            'value' => self::ANIME_TYPES_SPECIAL
+        ],
+        [
+            'title' => self::ANIME_TYPES[self::ANIME_TYPES_TV_SHORT],
+            'value' => self::ANIME_TYPES_TV_SHORT
+        ],
+        [
+            'title' => self::ANIME_TYPES[self::ANIME_TYPES_MUSIC],
+            'value' => self::ANIME_TYPES_MUSIC
+        ],
+    ];
 
     public const ANIME_STATUSES = [
         [
@@ -79,7 +120,9 @@ class Anime extends Model
         self::ANIME_TYPES_PV => 'PV',
         self::ANIME_TYPES_CM => 'CM',
         self::ANIME_TYPES_SPECIAL => 'Спешал',
-        self::ANIME_TYPES_TV_SPECIAL => 'TV спешал'
+        self::ANIME_TYPES_TV_SHORT => 'TV шорт',
+        self::ANIME_TYPES_MUSIC => 'Музыкальное',
+        self::ANIME_TYPES_UNKNOWN => 'Неизвестно',
     ];
 
     public const ANIME_FIELDS = [
@@ -99,6 +142,14 @@ class Anime extends Model
         'link_to_watch',
         'created_at',
         'updated_at'
+    ];
+
+    protected $fillable = self::ANIME_FIELDS;
+
+    protected $casts = [
+        'tags' => 'array',
+        'studio' => 'array',
+        'alter_names' => 'array',
     ];
 
     public const ENTITY_TYPE = __CLASS__;
