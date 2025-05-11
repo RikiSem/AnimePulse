@@ -17,6 +17,12 @@ class Texts
 
     ];
 
+    public const FILTER_STUDIO = 'Выберите студию';
+    public const FILTER_RELEASE_YEAR = 'Выберите год выхода';
+    public const FILTER_USER_STATUS = 'Выберите статус';
+    public const FILTER_ANIME_STATUS = self::FILTER_USER_STATUS;
+    public const FILTER_ANIME_TYPE = 'Выберите тип';
+
     public static function getAboutText(string $host, int $animeCount = 0, int $reviewCount = 0)
     {
         $text = [

@@ -37,10 +37,6 @@ class Anime extends Model
 
     public const ANIME_TYPES_FILTER = [
         [
-            'title' => 'Выберите тип',
-            'value' => ''
-        ],
-        [
             'title' => self::ANIME_TYPES[self::ANIME_TYPES_FULL],
             'value' => self::ANIME_TYPES_FULL
         ],
@@ -71,10 +67,6 @@ class Anime extends Model
     ];
 
     public const ANIME_STATUSES = [
-        [
-            'title' => 'Выберите статус',
-            'value' => ''
-        ],
         self::SYSTEM_ANIME_STATUS_ONGOING => [
             'title' => 'Онгоинг',
             'value' => self::SYSTEM_ANIME_STATUS_ONGOING
@@ -90,10 +82,6 @@ class Anime extends Model
     ];
 
     public const ANIME_STATUS_FOR_USER = [
-        [
-            'title' => 'Выберите статус',
-            'value' => ''
-        ],
         self::SYSTEM_ANIME_STATUS_FOR_USER_WILL_WATCH => [
             'title' => 'Буду смотреть',
             'value' => self::SYSTEM_ANIME_STATUS_FOR_USER_WILL_WATCH

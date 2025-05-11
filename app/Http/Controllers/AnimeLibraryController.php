@@ -6,11 +6,11 @@ use App\Http\Classes\Pages;
 use App\Http\Classes\Reps\AnimeRep;
 use App\Http\Classes\Reps\StudioRep;
 use App\Http\Classes\ResponseBodyBuilder;
-use App\Interface\EntityRepositoryInterface;
+use App\Http\Classes\Texts;
 use App\Interface\LibraryInterface;
 use App\Models\Anime;
 use App\Traits\PrepareFilterList;
-use App\Traits\PrepareReleaseYearFilterList;
+use App\Traits\PrepareShowPageBody;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -18,6 +18,7 @@ use Inertia\Inertia;
 class AnimeLibraryController implements LibraryInterface
 {
     use PrepareFilterList;
+    use PrepareShowPageBody;
     protected AnimeRep $animeRep;
     protected StudioRep $studioRep;
     public function __construct(AnimeRep $animeRep, StudioRep $studioRep) {
@@ -34,15 +35,10 @@ class AnimeLibraryController implements LibraryInterface
     }
 
     public function show(Request $request) {
-        return Inertia::render('LibraryAnime', [
-            'pages' => Pages::$pages,
-            'animeStatuses' => Anime::ANIME_STATUSES,
-            'statusForUser' => Anime::ANIME_STATUS_FOR_USER,
-            'animeTypes' => Anime::ANIME_TYPES_FILTER,
-            'userId' => Auth::getUser() != null ? Auth::getUser()->getAuthIdentifier() : 0,
-            'params' => $request->params ?? [],
-            'animeReleaseYears' => self::prepareList($this->animeRep->getAllUnicReleaseYears()->toArray(), 'Выберите год выхода'),
-            'studios' => self::prepareList($this->studioRep->getAllStudioNames()->toArray(), 'Выберите студию'),
-        ]);
+        return Inertia::render('LibraryAnime',
+                self::prepareForFilter(
+                $this->animeRep,
+                $this->studioRep,
+            ));
     }
 }

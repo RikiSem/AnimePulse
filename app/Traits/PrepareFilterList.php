@@ -8,8 +8,8 @@ trait PrepareFilterList
     {
         $result = array_map(function ($item) {
             return [
-                'title' => $item,
-                'value' => $item
+                'title' => $item['title'] ?? $item,
+                'value' => $item['value'] ?? $item
             ];
         }, $array);
         array_unshift($result, [
