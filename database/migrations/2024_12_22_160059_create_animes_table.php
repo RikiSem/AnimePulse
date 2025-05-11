@@ -24,7 +24,6 @@ return new class extends Migration
             $table->integer('release_month')->nullable(true);
             $table->integer('release_year')->nullable(true);
             $table->boolean('in_current_season')->nullable(true);
-            $table->json('studio')->nullable(true);
             $table->string('type')->nullable(true);
             $table->string('status')->nullable(true);
             $table->integer('count_series')->nullable(true);

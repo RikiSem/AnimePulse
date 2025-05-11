@@ -45,13 +45,6 @@
         </template>
         <template v-slot:body>
             <AuthenticatedLayout>
-                <template #header>
-                    <h2
-                        class="text-xl leading-tight text-gray-800">
-                        Ваши рецензии
-                    </h2>
-                </template>
-
                 <div class="py-3 bg-color-first">
                     <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                         <div class="shadow-sm">

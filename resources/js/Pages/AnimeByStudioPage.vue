@@ -5,18 +5,6 @@
     </Head>
     <page-template :pages="pages" :user="$attrs.auth.user">
         <template v-slot:content>
-            <anime-list-filter
-                @filterData="filterData => this.applyFilter(filterData)"
-                :user-id="this.$props.userId"
-                :statuses-for-user="statusForUser"
-                :anime-statuses="animeStatuses"
-                :anime-types="animeTypes"
-                :anime-release-years="animeReleaseYears"
-                :studios="studios"
-                :filter-route="'library.anime.all'"
-                class="mx-5 my-5 default-border-color-sec p-6">
-
-            </anime-list-filter>
             <div v-if="this.result.length > 0">
                 <div class="animes">
                     <anime-card v-for="anime in this.result" :anime="anime"></anime-card>
@@ -31,50 +19,37 @@
 </template>
 
 <script>
-import MainLayout from "@/Layouts/MainLayout.vue";
-import AuthMenu from "@/Components/AuthMenu.vue";
-import AnimeListFilter from "@/Components/AnimeListFilter.vue";
-import AnimeCard from "@/Components/AnimeCard.vue";
-import Btn from "@/Components/Btn.vue";
-import UpScroll from "@/Components/UpScroll.vue";
+
 import PageTemplate from "@/Layouts/PageTemplate.vue";
-import { Head } from '@inertiajs/vue3';
+import {Head} from "@inertiajs/vue3";
+import Btn from "@/Components/Btn.vue";
+import Dropdown from "@/Components/Dropdown.vue";
+import EntityPageLayout from "@/Layouts/EntityPageLayout.vue";
+import WriteReview from "@/Components/WriteReview.vue";
+import Modal from "@/Components/Modal.vue";
+import AnimeCard from "@/Components/AnimeCard.vue";
+
 export default {
-    name: "LibraryAnime",
-    components: {PageTemplate, UpScroll, Btn, AnimeCard, AnimeListFilter, AuthMenu, MainLayout, Head},
+    components: {
+        AnimeCard,
+        PageTemplate,
+        Dropdown,
+        Btn,
+        EntityPageLayout,
+        WriteReview, Modal, Head},
+    name: 'AnimeByStudioPage',
     data(){
         return {
             result: [],
-            offset: 0,
+            offset: 1,
             params: [],
         }
     },
     props:{
-        pages:{
-            type: Array,
-        },
-        animeReleaseYears: Array,
-        studios: Array,
-        animeStatuses: Array,
-        statusForUser: Array,
-        animeTypes: Array,
-        userId: Number,
-        params: {
-            type: Object,
-            default: {}
-        }
-    },
-    mounted() {
-        this.params = this.$props.params
-        this.getAnime();
+        pages: Array,
+        animes: Array,
     },
     methods:{
-        applyFilter(filterData){
-            filterData.offset = this.offset
-            this.params = filterData
-            this.result = []
-            this.getAnime()
-        },
         setOffsetAndGet()
         {
             this.offset ++
@@ -94,10 +69,5 @@ export default {
 </script>
 
 <style scoped>
-.animes{
-    height: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
+
 </style>

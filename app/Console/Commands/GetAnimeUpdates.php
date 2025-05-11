@@ -3,9 +3,11 @@
 namespace App\Console\Commands;
 
 use App\Http\Classes\Reps\AnimeRep;
+use App\Http\Classes\Reps\StudioRep;
 use App\Http\Classes\Reps\TagRep;
 use App\Models\Anime;
 use App\Traits\AnimeBodyBuild;
+use App\Traits\RefactorStudiosInAnimeData;
 use Carbon\Carbon;
 use Exception;
 use GuzzleHttp\Client;
@@ -16,6 +18,7 @@ class GetAnimeUpdates extends Command
 {
 
     use AnimeBodyBuild;
+    use RefactorStudiosInAnimeData;
 
     /**
      * The name and signature of the console command.
@@ -45,15 +48,17 @@ class GetAnimeUpdates extends Command
     protected Client $client;
     protected AnimeRep $animeRep;
     protected TagRep $tagRep;
+    protected StudioRep $studioRep;
     protected string $isDesc;
     protected int $pageLimit;
 
-    public function __construct(Client $client, AnimeRep $animeRep, TagRep $tagRep)
+    public function __construct(Client $client, AnimeRep $animeRep, TagRep $tagRep, StudioRep $studioRep)
     {
         parent::__construct();
         $this->client = $client;
         $this->animeRep = $animeRep;
         $this->tagRep = $tagRep;
+        $this->studioRep = $studioRep;
     }
 
     /**
@@ -97,6 +102,7 @@ class GetAnimeUpdates extends Command
                             $russianDescription = $responseDataShiki['description'];
                             $message = 'get anime ' . $externalId;
                             $this->info($message);
+                            Log::info($message);
                             $data =                                 [
                                 'id' => $animeData['id'],
                                 'russian' => $russianName,
@@ -116,6 +122,7 @@ class GetAnimeUpdates extends Command
                             if ($isExist) {
                                 $message = 'update anime ' . $externalId;
                                 $this->info($message);
+                                Log::info($message);
                                 $this->updateAnime(
                                     $anime,
                                     $data
@@ -124,6 +131,7 @@ class GetAnimeUpdates extends Command
                             }
                             $message = 'creating anime ' . $externalId;
                             $this->info($message);
+                            Log::info($message);
                             $this->createNewAnime(
                                 new Anime(),
                                 $data
@@ -213,7 +221,11 @@ class GetAnimeUpdates extends Command
             ]);
             return json_decode($response->getBody(), true)['data'];
         } catch (Exception $e) {
-            $this->info(sprintf('retry in %s sec', self::TIMEOUT));
+            if ($e->getCode() !== 429) {
+                $this->info(sprintf('skip page %s', $page));
+                return [];
+            }
+            $this->info(sprintf('retry in %s sec with error %s', self::TIMEOUT, $e->getMessage()));
             sleep(self::TIMEOUT);
         }
         return $this->getAnimePage($page);
@@ -261,7 +273,11 @@ class GetAnimeUpdates extends Command
             $data = json_decode($response->getBody(), true);
             return !empty($data['data']['animes']) ? reset($data['data']['animes']) : false;            
         } catch (Exception $e) {
-            $this->info(sprintf('retry in %s sec', self::TIMEOUT));
+            if ($e->getCode() !== 429) {
+                $this->info(sprintf('skip anime with name %s', $name));
+                return [];
+            }
+            $this->info(sprintf('retry in %s sec with error %s', self::TIMEOUT, $e->getMessage()));
             sleep(self::TIMEOUT);
         }
         return $this->getShikimoriDataByAnimeName($name);
@@ -270,8 +286,11 @@ class GetAnimeUpdates extends Command
     public function updateAnime(Anime $anime, $responseData)
     {
         try {
-            $anime = self::prepareBody($anime, $responseData, $this->tagRep);
+            $anime = self::prepareBody($anime, $responseData, $this->tagRep, $this->studioRep, $this);
             $anime->update();
+            $this->info('start setting studios');
+            self::refactorStudio($anime, $responseData['studios'], $this->studioRep, $this);
+            $this->info('end setting studios');
         } catch (Exception $e) {
             Log::error('Ошибка при обновлении аниме: ' . $e->getMessage(), [
                 'anime_id' => $anime->id ?? null,
@@ -284,8 +303,11 @@ class GetAnimeUpdates extends Command
     public function createNewAnime(Anime $anime, $responseData)
     {
         try {
-            $anime = self::prepareBody($anime, $responseData, $this->tagRep);
+            $anime = self::prepareBody($anime, $responseData, $this->tagRep, $this->studioRep, $this);
             $anime->save();
+            $this->info('start setting studios');
+            self::refactorStudio($anime, $responseData['studios'], $this->studioRep, $this);
+            $this->info('end setting studios');
         } catch (Exception $e) {
             Log::error('Ошибка при добавлении аниме: ' . $e->getMessage(), [
                 'anime_id' => $anime->id ?? null,

@@ -67,7 +67,7 @@ const open = ref(false);
         >
             <div
                 v-show="open"
-                class="absolute z-50 mt-2 rounded-md shadow-lg"
+                class="absolute z-50 mt-2 rounded-md shadow-lg fit-content"
                 :class="[widthClass, alignmentClasses]"
                 style="display: none"
             >
@@ -85,5 +85,8 @@ const open = ref(false);
 .content{
     width: fit-content;
     border: 2px solid var(--color-sec);
+}
+.fit-content{
+    width: fit-content;
 }
 </style>

@@ -124,13 +124,27 @@
                                 </template>
                             </td>
                         </tr>
+                        <tr v-if="animeData.type !== null">
+                            <th>
+                                Тип
+                            </th>
+                            <td class="table-content">
+                                {{animeData.type}}
+                            </td>
+                        </tr>
                         <tr v-if="animeData.tags !== null">
                             <th>
                                 Жанры
                             </th>
                             <td class="table-content">
                                 <div class="tags">
-                                    <p class="tag" v-for="tag in animeData.tags">{{tag}}</p>
+                                    <a class="tag" v-for="tag in animeData.tags" :href="route('library.anime', {
+                                                params: {
+                                                    tags: tag,
+                                                }
+                                            })">
+                                        {{tag}}
+                                    </a>
                                 </div>
                             </td>
                         </tr>
@@ -156,9 +170,17 @@
                             </th>
                             <td class="table-content">
                                 <div>
-                                    <p v-for="studio in animeData.studio">
-                                        {{studio}}
-                                    </p>
+                                    <template v-for="studio in animeData.studio">
+                                        <p v-if="studio !== null">
+                                            <a class="studio-link" :href="route('library.anime', {
+                                                params: {
+                                                    studio: studio[0].name,
+                                                },
+                                            })">
+                                                {{studio[0].name}}
+                                            </a>
+                                        </p>
+                                    </template>
                                 </div>
                             </td>
                         </tr>
@@ -379,6 +401,11 @@ export default {
     flex-wrap: wrap;
     justify-content: center;
     font-size: 1.0rem;
+}
+.studio-link{
+    background-color: var(--color-sec);
+    padding: 1px 5px 1px 5px;
+    margin: 5px;
 }
 .tag{
     margin: 5px;

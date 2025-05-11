@@ -4,6 +4,8 @@
             <check-box-list class="mx-1" @itemChanged="event => this.filterData.status = event.target.value" :items="animeStatuses">Статус аниме</check-box-list>
             <check-box-list class="mx-1" @itemChanged="event => this.filterData.type = event.target.value" :items="animeTypes">Тип аниме</check-box-list>
             <check-box-list class="mx-1" v-if="userId > 0" @itemChanged="event => this.filterData.view_status = event.target.value" :items="statusesForUser">Статус аниме у пользователя</check-box-list>
+            <check-box-list class="mx-1" @itemChanged="event => this.filterData.release_year = event.target.value" :items="animeReleaseYears">Год выхода</check-box-list>
+            <check-box-list class="mx-1" @itemChanged="event => this.filterData.studio = event.target.value" :items="studios">Студия</check-box-list>
             <multiple-select @selectedTags="selectedTags => this.filterData.tags = selectedTags" class="mx-1" :items="tags">Жанры</multiple-select>
             <p class="filter-checkbox"><check-box-input v-if="userId > 0" @statusChange="status => this.filterData.favoriteStatus = status" name="isFavorite">Любимое</check-box-input></p>
             <p class="filter-checkbox"><check-box-input @statusChange="status => this.filterData.newest = status" name="newest">Сначала новое</check-box-input></p>
@@ -39,12 +41,20 @@ export default {
                 tags: [],
                 favoriteStatus: false,
                 newest: false,
+                studio: '',
+                release_year: '',
                 offset: 0,
             },
             tags: [],
         }
     },
     props:{
+        studios: {
+            type: Array,
+        },
+        animeReleaseYears:{
+            type: Array,
+        },
         userId:{
             type: Number,
             default: 0,

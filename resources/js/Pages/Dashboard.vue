@@ -45,16 +45,20 @@
         </template>
         <template v-slot:body>
             <AuthenticatedLayout>
-                <template #header>
-                    <h2
-                        class="text-xl leading-tight text-gray-800">
-                        Список аниме
-                    </h2>
-                </template>
                 <div class="py-3 bg-color-first">
                     <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                         <div class="overflow-hidden shadow-sm">
-                            <anime-list-filter @filterData="filterData => this.applyFilter(filterData)" :filter-route="'anime.filter'" :user-id="this.$attrs.auth.user.id" :statuses-for-user="statusForUser" :anime-statuses="animeStatuses" id="anime-filter" class="mx-5 my-5 default-border-color-sec p-6"></anime-list-filter>
+                            <anime-list-filter
+                                @filterData="filterData => this.applyFilter(filterData)"
+                                :filter-route="'anime.filter'"
+                                :user-id="this.$attrs.auth.user.id"
+                                :statuses-for-user="statusForUser"
+                                :anime-statuses="animeStatuses"
+                                :anime-types="animeTypes"
+                                :anime-release-years="animeReleaseYears"
+                                :studios="studios"
+                                id="anime-filter" class="mx-5 my-5 default-border-color-sec p-6">
+                            </anime-list-filter>
                             <div class="my-anime-list">
                                 <my-anime-list-table :items="result"></my-anime-list-table>
                             </div>
@@ -86,6 +90,9 @@ export default {
         pages: Array,
         animeStatuses: Array,
         statusForUser: Array,
+        animeTypes: Array,
+        animeReleaseYears: Array,
+        studios: Array,
     },
     methods:{
         applyFilter(filterData){

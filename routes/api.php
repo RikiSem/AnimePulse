@@ -5,6 +5,7 @@ use App\Http\Controllers\AnimeLibraryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\MangaLibraryController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\StudioController;
 use App\Http\Middleware\CheckRequestLocal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -59,6 +60,10 @@ Route::middleware(CheckRequestLocal::class)->group(function () {
 
     Route::prefix('reaction')->group(function () {
         Route::post('/create', [\App\Http\Controllers\ReactionController::class, 'create'])->name('reaction.create');
+    });
+
+    Route::prefix('studio')->group(function () {
+        Route::post('/get', [StudioController::class, 'get'])->name('studio.get');
     });
 
     Route::prefix('favorite')->group(function () {

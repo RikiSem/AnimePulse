@@ -12,6 +12,7 @@ use App\Http\Controllers\LibraryController;
 use App\Http\Controllers\MangaLibraryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\StudioController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VideoController;
 use Illuminate\Foundation\Application;
@@ -62,6 +63,10 @@ Route::middleware('auth')->controller(DashboardController::class)->group(functio
         Route::get('/show/reviews', [UserController::class, 'showUserReviews'])->name('user.reviews');
         Route::get('/show/comments', [UserController::class, 'showUserComments'])->name('user.comments');
     });
+});
+
+Route::prefix('studio')->group(function () {
+    Route::get('/show/{id}', [StudioController::class, 'show'])->name('studio.show');
 });
 
 Route::middleware('auth')->controller(ProfileController::class)->group(function () {

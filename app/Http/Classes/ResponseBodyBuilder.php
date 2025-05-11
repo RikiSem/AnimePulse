@@ -3,8 +3,9 @@
 
 namespace App\Http\Classes;
 
-
+use App\Http\Classes\Reps\StudioRep;
 use App\Models\Anime;
+use App\Models\AnimeStudio;
 use App\Models\Comment;
 use App\Models\Favorites;
 use App\Models\Manga;
@@ -141,7 +142,14 @@ class ResponseBodyBuilder
             'rate' => round($anime->userRate->select('user_rate')->sum('user_rate') / ($anime->userRate->count() === 0 ? 1 : $anime->userRate->count()), 2),
             'count_series' => $anime->count_series,
             'status' => Anime::ANIME_STATUSES[$anime->status]['title'],
-            'studio' => !empty($anime->studio) ? $anime->studio : null,
+            'studio' => $anime->studioLink->map(function ($link) {
+                return $link->studio->map(function ($studio) {
+                    return [
+                        'name' => $studio->name,
+                        'id' => $studio->id
+                    ];
+                });
+            }),
             'type' => in_array($anime->type, array_keys(Anime::ANIME_TYPES)) ? Anime::ANIME_TYPES[$anime->type] : Anime::ANIME_TYPES[Anime::ANIME_TYPES_UNKNOWN],
             'poster' => Storage::url('imgs/posters/' . $anime->poster),
             'season'=> sprintf( '%s %s',
@@ -152,9 +160,9 @@ class ResponseBodyBuilder
             'link_to-watch' => $anime->link_to,
             'release_date' => Carbon::parse(sprintf(
                 '%s.%s.%s', 
-                $anime->release_day, 
-                $anime->release_month, 
-                $anime->release_year, 
+                $anime->release_day ?? 0, 
+                $anime->release_month ?? 0, 
+                $anime->release_year ?? 0, 
             ))->format('d.m.Y'),
             'release_day' => $anime->release_day,
             'release_month' => $anime->release_month,

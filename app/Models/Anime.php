@@ -133,7 +133,6 @@ class Anime extends Model
         'tags',
         'season',
         'release_date',
-        'studio',
         'type',
         'status',
         'count_series',
@@ -148,7 +147,6 @@ class Anime extends Model
 
     protected $casts = [
         'tags' => 'array',
-        'studio' => 'array',
         'alter_names' => 'array',
     ];
 
@@ -182,5 +180,10 @@ class Anime extends Model
     public function views(): MorphMany
     {
         return $this->morphMany(View::class, 'viewable');
+    }
+
+    public function studioLink(): HasMany
+    {
+        return $this->hasMany(AnimeStudio::class, 'anime_id', 'id');
     }
 }
