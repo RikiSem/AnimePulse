@@ -11,9 +11,13 @@ use Illuminate\Database\Eloquent\Model;
 class UserAnimeListRep
 {
     public function getOne(int $userId, int $animeId) {
-        return UserAnimeList::where('user_id', '=', $userId)
+        /*return UserAnimeList::where('user_id', '=', $userId)
             ->where('anime_id', '=', $animeId)
-            ->first();
+            ->first();*/
+            return UserAnimeList::firstOrCreate([
+                'user_id' => $userId,
+                'anime_id' => $animeId
+            ]);
     }
 
     public function getUserAnimeList(int $userId, array $filters = []) {
@@ -98,11 +102,14 @@ class UserAnimeListRep
         }
     }
 
-    public function removeFromFavorite(int $userId, int $animeId) {
+    public function removeFromFavorite(int $userId, int $animeId): UserAnimeList
+    {
         $animeList = UserAnimeList::where('user_id', '=', $userId)
             ->where('anime_id', '=', $animeId)
             ->first();
         $animeList->favorite = false;
         $animeList->update();
+
+        return $animeList;
     }
 }

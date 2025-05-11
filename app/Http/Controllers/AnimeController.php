@@ -53,7 +53,7 @@ class AnimeController extends Controller
 
             $result = response()->json(['status' => 'done']);
         } catch (Exception $e) {
-            $result = response()->json(['error' => 'Failed to update list'], 500);
+            $result = response()->json(['error' => $e->getMessage()], 500);
         }
 
         return $result;
@@ -79,14 +79,14 @@ class AnimeController extends Controller
                     $userAnimeList->view_status = $validated['new_status'];
                 }
                 $userAnimeList->update();
-                if ($userAnimeList->view_status === null) {
+                if ($userAnimeList->view_status === null && !$userAnimeList->favorite) {
                     $userAnimeList->delete();
                 }
             }
 
             $result = response()->json(['status' => 'done']);
         } catch (Exception $e) {
-            $result = response()->json(['error' => 'Failed to add to list'], 500);
+            $result = response()->json(['error' => $e->getMessage()], 500);
         }
         return $result;
     }
@@ -105,7 +105,7 @@ class AnimeController extends Controller
             );
             $result = response()->json(['status' => 'done']);
         } catch (Exception $e) {
-            $result = response()->json(['error' => 'Failed to remove from list'], 500);
+            $result = response()->json(['error' => $e->getMessage()], 500);
         }
 
         return $result;
@@ -115,7 +115,7 @@ class AnimeController extends Controller
         return Inertia::render('AnimePage', [
             'id' => $request->id,
             'pages' => Pages::$pages,
-            'user_statuses' => array_slice(array_values(Anime::ANIME_STATUS_FOR_USER), 1),
+            'user_statuses' => array_values(Anime::ANIME_STATUS_FOR_USER),
             'rule' => Texts::getRules(),
         ]);
     }
@@ -141,7 +141,7 @@ class AnimeController extends Controller
     public function getForUser(Request $request) {
         try {
             $validated = $request->validate([
-                'params' => 'required|array',
+                'params' => 'array',
                 'userId' => 'required|integer',
             ]);
 
@@ -152,7 +152,7 @@ class AnimeController extends Controller
 
             $result = response(!empty($result) ? $result : null);
         } catch (Exception $e) {
-            $result = response()->json(['error' => 'Failed to get anime for user'], 500);
+            $result = response()->json(['error' => $e->getMessage()], 500);
         }
 
         return $result;

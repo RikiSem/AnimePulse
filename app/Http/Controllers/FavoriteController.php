@@ -33,12 +33,10 @@ class FavoriteController extends Controller
                 );
             }
             $currentFavorite->update();
+            if (!$currentFavorite->favorite && $currentFavorite->view_status === null) {
+                $currentFavorite->delete();
+            }
         }
-        return response('done');
-    }
-
-    public function remove(Request $request) {
-        $this->userAnimeListRep->removeFromFavorite($request->user_id, $request->entity_id);
         return response('done');
     }
 }
