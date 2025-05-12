@@ -14,7 +14,13 @@
             <text-input @input="event => this.filterData.name = event.target.value" type="text" class="bg-color-first h-16 text-input align-self-center anime-name-input" placeholder="Название аниме"></text-input>
         </div>
         <div class="row">
-            <!--<btn style="margin-bottom: 20px;" v-if="filterData.tags.length > 0 || filterData.status !== '' || filterData.view_status !== '' || filterData.name !== ''" @click="dropFilterAndApply">Сбросить фильтр</btn>-->
+            <btn
+                style="margin-bottom: 20px;"
+                v-if="JSON.stringify(this.defaultFilterData) !== JSON.stringify(this.filterData)"
+                @click="dropFilterAndApply"
+            >
+                Сбросить фильтр
+            </btn>
             <btn @click="applyFilter">Фильтровать</btn>
         </div>
     </div>
@@ -33,6 +39,19 @@ export default {
     data(){
         return {
             filterData: {
+                userId: '',
+                status: '',
+                view_status: '',
+                name: '',
+                type: '',
+                tags: [],
+                favoriteStatus: false,
+                newest: false,
+                studio: '',
+                release_year: '',
+                offset: 0,
+            },
+            defaultFilterData: {
                 userId: '',
                 status: '',
                 view_status: '',
@@ -76,10 +95,8 @@ export default {
     methods:{
         dropFilterAndApply()
         {
-            this.filterData.name = ''
-            this.filterData.view_status = ''
-            this.filterData.status = ''
-            this.filterData.tags = []
+            this.defaultFilterData.userId = this.filterData.userId
+            this.filterData = this.defaultFilterData
             this.applyFilter();
         },
         async applyFilter() {

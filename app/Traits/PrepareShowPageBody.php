@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 trait PrepareShowPageBody
 {
     use PrepareFilterList;
-    public static function prepareForFilter(AnimeRep $animeRep, StudioRep $studioRep): array
+    public static function prepareForFilter(AnimeRep $animeRep, StudioRep $studioRep, array $params): array
     {
         return [
             'pages' => Pages::$pages,
@@ -20,7 +20,7 @@ trait PrepareShowPageBody
             'statusForUser' => self::prepareList(Anime::ANIME_STATUS_FOR_USER, Texts::FILTER_USER_STATUS),
             'animeTypes' => self::prepareList(Anime::ANIME_TYPES_FILTER, Texts::FILTER_ANIME_TYPE),
             'userId' => Auth::getUser() != null ? Auth::getUser()->getAuthIdentifier() : 0,
-            'params' => $request->params ?? [],
+            'params' => $params,
             'animeReleaseYears' => self::prepareList($animeRep->getAllUnicReleaseYears()->toArray(), Texts::FILTER_RELEASE_YEAR),
             'studios' => self::prepareList($studioRep->getAllStudioNames()->toArray(), Texts::FILTER_STUDIO),
         ];

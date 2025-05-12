@@ -39,6 +39,7 @@ class AnimeLibraryController implements LibraryInterface
                 self::prepareForFilter(
                 $this->animeRep,
                 $this->studioRep,
+                $request->params ?? []
             ));
     }
 }

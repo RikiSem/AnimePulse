@@ -16,9 +16,9 @@ class CheckRequestLocal
      */
     public function handle(Request $request, Closure $next)/*: Response*/
     {
-        //if ($request->header('Origin') === Config::get('app.url')) {
+        if ($request->header('Origin') === Config::get('app.url')) {
             return $next($request);
-        //}
-        //return response('Forbidden', 403);
+        }
+        return response('Forbidden', 403);
     }
 }

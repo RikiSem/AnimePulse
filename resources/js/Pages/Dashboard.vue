@@ -94,6 +94,9 @@ export default {
         animeReleaseYears: Array,
         studios: Array,
     },
+    mounted() {
+        this.getData();
+    },
     methods:{
         applyFilter(filterData){
             filterData.offset = this.offset
@@ -108,9 +111,6 @@ export default {
             }));
             this.result = response.data;
         }
-    },
-    mounted() {
-        this.getData();
     }
 }
 </script>

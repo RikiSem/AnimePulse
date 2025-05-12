@@ -50,9 +50,7 @@ export default {
         }
     },
     props:{
-        pages:{
-            type: Array,
-        },
+        pages: Array,
         animeReleaseYears: Array,
         studios: Array,
         animeStatuses: Array,
@@ -60,8 +58,8 @@ export default {
         animeTypes: Array,
         userId: Number,
         params: {
-            type: Object,
-            default: {}
+            type: Array,
+            default: () => []
         }
     },
     mounted() {
@@ -72,6 +70,12 @@ export default {
         applyFilter(filterData){
             filterData.offset = this.offset
             this.params = filterData
+            if (this.$props.params.tags !== undefined) {
+                this.params.tags.push(this.$props.params.tags)
+            }
+            if (this.$props.params.studio !== undefined) {
+                this.params.studio = this.$props.params.studio
+            }
             this.result = []
             this.getAnime()
         },

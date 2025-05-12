@@ -42,6 +42,7 @@ class DashboardController extends Controller
             self::prepareForFilter(
                 $this->animeRep,
                 $this->studioRep,
+                $request->params ?? []
             )
         );
     }
